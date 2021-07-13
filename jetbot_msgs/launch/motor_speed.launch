@@ -1,0 +1,7 @@
+<launch>
+
+  <group ns="jetbot">
+    <node pkg="jetbot_msgs" name="test" type="test.py"/>
+  </group>
+
+</launch>

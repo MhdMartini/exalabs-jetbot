@@ -1,0 +1,8 @@
+<launch>
+
+  <group ns="jetbot">
+    <node pkg="motor_speed" name="wheels_commands_node" type="wheels_commands.py"/>
+    <node pkg="motor_speed" name="motor_speed_node" type="motor_speed.py"/>
+  </group>
+
+</launch>
