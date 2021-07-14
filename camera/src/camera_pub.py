@@ -5,9 +5,8 @@ Node to publish jetbot camera images.
 Subscribes to: None
 Published to: camera
 msg info:
-    CameraImage
-        data    list[]
-
+    sensor_msgs/Image
+        data    ros image msg
 
 Mohamed Martini
 University of Massachusetts Lowell
