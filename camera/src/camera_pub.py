@@ -38,17 +38,18 @@ class CameraPub:
         pub = rospy.Publisher(OUT_TOPIC, Image, queue_size=1)
 
         self.camera = Camera.instance(width=WIDTH_SCALED, height=HEIGHT_SCALED)
-        while True:
-            image = self.camera.value
-            image_ros = bridge.cv2_to_imgmsg(image, "bgr8")
-            pub.publish(image_ros)
+
+        try:
+            while True:
+                image = self.camera.value
+                image_ros = bridge.cv2_to_imgmsg(image, "bgr8")
+                pub.publish(image_ros)
+        except Exception as e:
+            self.camera.stop()
+            raise e
 
 
 if __name__ == '__main__':
     rospy.init_node(NODE_NAME, anonymous=True)
-    try:
-        c = CameraPub()
-        rospy.spin()
-    except Exception as e:
-        c.camera.stop()
-        raise e
+    CameraPub()
+    rospy.spin()
