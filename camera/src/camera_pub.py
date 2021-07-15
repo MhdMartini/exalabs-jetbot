@@ -14,7 +14,7 @@ University of Massachusetts Lowell
 import rospy
 from jetbot import Camera
 from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
+import numpy as np
 
 
 NODE_NAME = "camera_pub_node"
@@ -33,19 +33,24 @@ HEIGHT_SCALED = int(HEIGHT / DEFAULT_SCALE)  # 410
 class CameraPub:
     def __init__(self):
         # create a jetbot.Camera instance. Images are stored in the "value" attribute of the instance
-        bridge = CvBridge()
         pub = rospy.Publisher(OUT_TOPIC, Image, queue_size=1)
-
         self.camera = Camera.instance(width=WIDTH_SCALED, height=HEIGHT_SCALED)
 
         try:
             while True:
                 image = self.camera.value
-                image_ros = bridge.cv2_to_imgmsg(image, "bgr8")
-                pub.publish(image_ros)
+                image_ros = bytes(image.astype(np.uint8))  # cv_bridge alternative
+
+                msg = Image()
+                msg.data = image_ros
+                msg.width = WIDTH_SCALED
+                msg.height = HEIGHT_SCALED
+                pub.publish(msg)
         except Exception as e:
-            self.camera.stop()
             raise e
+        finally:
+            self.camera.stop()
+            print("released camera")
 
 
 if __name__ == '__main__':

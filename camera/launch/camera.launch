@@ -1,0 +1,7 @@
+<launch>
+
+  <group ns="jetbot">
+    <node pkg="camera" name="camera_pub_node" type="camera_pub.py"/>
+  </group>
+
+</launch>
