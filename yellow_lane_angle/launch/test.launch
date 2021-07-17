@@ -1,0 +1,10 @@
+<launch>
+
+<include file="$(find camera)/launch/camera.launch"/>
+<include file="$(find yellow_mask)/launch/yellow_mask.launch"/>
+
+  <group ns="jetbot">
+    <node pkg="yellow_lane_angle" name="yellow_lane_angle_node" type="yellow_lane_angle.py"/>
+  </group>
+
+</launch>
