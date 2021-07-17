@@ -1,0 +1,7 @@
+<launch>
+
+  <group ns="jetbot">
+    <node pkg="yellow_lane_angle" name="yellow_lane_angle_node" type="yellow_lane_angle.py"/>
+  </group>
+
+</launch>
