@@ -37,17 +37,19 @@ class YellowLaneAngle:
         yellow_mask = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative
         canter_x_pixel = int(msg.width / 2)
         center_x = self.get_center_x(yellow_mask)
-        angle = (canter_x_pixel - center_x) / canter_x_pixel
+        if center_x is None:
+            angle = 0
+        else:
+            angle = (center_x - canter_x_pixel) / canter_x_pixel  # (center_x - canter_x_pixel) should be (canter_x_pixel - center_x) if camera image is not flipped
 
         self.pub.publish(angle)
 
     def get_center_x(self, yellow_mask):
         moments = cv2.moments(yellow_mask)
         try:
-            center_x = int(moments["m10"] / moments["m00"])
+            return int(moments["m10"] / moments["m00"])
         except ZeroDivisionError:  # no lane is detected
-            center_x = 0
-        return center_x
+            return None
 
 
 if __name__ == "__main__":
