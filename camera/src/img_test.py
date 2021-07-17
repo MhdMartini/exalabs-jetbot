@@ -18,8 +18,8 @@ import numpy as np
 
 
 NODE_NAME = "img_test_node"
-IN_TOPIC = "camera"
-
+#IN_TOPIC = "/jetbot/camera/raw"  # add /jetbot/ namespace when only running with rosrun
+IN_TOPIC = "/jetbot/camera/yellow_mask"
 
 
 class ImgTest:
@@ -33,6 +33,7 @@ class ImgTest:
         im = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative
         cv2.imwrite("/home/jetbot/Desktop/test{}.png".format(str(self.i % 5)), im)
         self.i += 1
+        rospy.logwarn("Saving Images to your Desktop")
 
 if __name__ == '__main__':
     rospy.init_node(NODE_NAME, anonymous=True)

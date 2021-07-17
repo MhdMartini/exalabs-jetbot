@@ -1,0 +1,7 @@
+<launch>
+
+  <group ns="jetbot">
+    <node pkg="yellow_mask" name="yellow_mask_node" type="yellow_mask.py"/>
+  </group>
+
+</launch>
