@@ -4,7 +4,7 @@ Node to control the Jetbot's motor linear and angular speed.
 
 Subscribes to: motor_speed
 msg info:
-    WheelsCommands
+    MotorSpeed
         v       Float32
         omega   Float32
 

@@ -8,7 +8,7 @@ msg info:
 
 Published to: yellow_lane_angle
 msg info:
-    jetbot_msgs/Vector2D
+    std_msgs/Float32
 
 
 Mohamed Martini
