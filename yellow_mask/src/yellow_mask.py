@@ -54,6 +54,8 @@ class YellowMask:
         msg.data = bytes(mask_yellow.astype(np.uint8))
         msg.height = mask_yellow.shape[0]
         msg.width = mask_yellow.shape[1]
+        msg.encoding = "mono8"
+        msg.step = len(msg.data) // msg.height
         self.pub.publish(msg)
 
     def preprocess_image(self, image):
