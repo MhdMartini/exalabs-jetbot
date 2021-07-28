@@ -7,13 +7,13 @@ import rospy
 
 
 class PID:
-    def __init__(self, error=0):
+    def __init__(self):
         self.reset()
 
         self.error_que = deque([], maxlen=2)  # save the last two error values
         self.time_que = deque([], maxlen=2)  # save the times at which errors are received
 
-        self.error_total = error
+        self.error_total = 0
 
     def add_error(self, error) -> list:
         self.error_que.append(error)
@@ -23,11 +23,12 @@ class PID:
 
         self.error_total += error
 
-        if len(self.error_que) == 1:
+        try:
+            d_error = self.error_que[1] - self.error_que[0]
+        except IndexError:
             # if we don't have two values yet
             return [error, error, 0]  # p, i, d
 
-        d_error = self.error_que[1] - self.error_que[0]
         dt = self.time_que[1] - self.time_que[0]
         error_der = d_error / dt
         return [error, self.error_total, error_der]

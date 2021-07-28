@@ -43,7 +43,7 @@ class PIDAngle:
     def control(self, msg):
         # receive angle error and control
         if self.pid is None:
-            self.pid = PID(msg.data)
+            self.pid = PID()
         p_err, i_err, d_err = self.pid.add_error(msg.data)
         ctrl = P * p_err + I * i_err + D * d_err
 
