@@ -1,0 +1,7 @@
+<launch>
+
+  <group ns="jetbot">
+    <node pkg="pid_angle" name="pid_angle_node" type="pid_angle.py"/>
+  </group>
+
+</launch>
