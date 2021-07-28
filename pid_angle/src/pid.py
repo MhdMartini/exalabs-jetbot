@@ -8,8 +8,6 @@ import rospy
 
 class PID:
     def __init__(self):
-        self.reset()
-
         self.error_que = deque([], maxlen=2)  # save the last two error values
         self.time_que = deque([], maxlen=2)  # save the times at which errors are received
 

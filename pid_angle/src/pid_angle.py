@@ -21,22 +21,26 @@ import rospy
 from std_msgs.msg import Float32
 from jetbot_msgs.msg import MotorSpeed
 from pid import PID
+import sys
 
+DEBUG = "DEBUG"
 
 NODE_NAME = "pid_angle_node"
 IN_TOPIC = "yellow_lane_angle"
 OUT_TOPIC = "motor_speed"
 
-P = 1
+P = 0.3
 I = 0
 D = 0
 
-V = 0.5  # vehicle velocity
+V = 0.4  # vehicle velocity
 
 
 class PIDAngle:
     def __init__(self):
         rospy.Subscriber(IN_TOPIC, Float32, self.control, queue_size=1)
+        rospy.Subscriber(DEBUG, Float32, self.stop, queue_size=1)
+
         self.pub = rospy.Publisher(OUT_TOPIC, MotorSpeed, queue_size=1)
         self.pid = None
 
@@ -49,9 +53,15 @@ class PIDAngle:
 
         msg = MotorSpeed()
         msg.v = V
-        msg.omega = - ctrl
+        msg.omega = ctrl
         self.pub.publish(msg)
 
+    def stop(self, msg):
+        ctrl = MotorSpeed()
+        ctrl.v = 0
+        ctrl.omega = 0
+        self.pub.publish(ctrl)
+        sys.exit(0)
 
 if __name__ == "__main__":
     rospy.init_node(NODE_NAME, anonymous=True)
