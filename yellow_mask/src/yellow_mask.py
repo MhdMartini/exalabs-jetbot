@@ -61,6 +61,7 @@ class YellowMask:
     def preprocess_image(self, image):
         # resize the image, and crop top half (actual bottom half)
         image_resized = cv2.resize(np.copy(image), (HEIGHT_NEW, WIDTH_NEW), interpolation=cv2.INTER_LINEAR)
+        rospy.logwarn(f"{HEIGHT_NEW}, {WIDTH_NEW}")
         image_cropped = image_resized[:HEIGHT_NEW // 2, :]  # crop top half
         return image_cropped
 
