@@ -2,6 +2,7 @@
 
   <group ns="jetbot">
     <node pkg="jetbot_ros" name="camera" type="jetbot_camera"/>
+    <node pkg="camera" name="img_processed_node" type="img_processed.py"/>
   </group>
 
 </launch>
