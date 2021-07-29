@@ -29,9 +29,9 @@ OUT_TOPIC = "motor_speed"
 
 P = 0.2
 I = 0
-D = 0.2
+D = 0.12
 
-V = 0.3  # vehicle velocity
+V = 0.32  # vehicle velocity
 
 
 class PIDAngle:
