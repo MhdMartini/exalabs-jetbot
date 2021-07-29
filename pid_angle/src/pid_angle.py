@@ -21,18 +21,17 @@ import rospy
 from std_msgs.msg import Float32
 from jetbot_msgs.msg import MotorSpeed
 from pid import PID
-import sys
 
 
 NODE_NAME = "pid_angle_node"
 IN_TOPIC = "yellow_lane_angle"
 OUT_TOPIC = "motor_speed"
 
-P = 0.3
+P = 0.2
 I = 0
-D = 0
+D = 0.2
 
-V = 0.4  # vehicle velocity
+V = 0.3  # vehicle velocity
 
 
 class PIDAngle:
