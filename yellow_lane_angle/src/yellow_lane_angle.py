@@ -40,7 +40,7 @@ class YellowLaneAngle:
         if center_x is None:
             angle = 0
         else:
-            angle = (center_x - canter_x_pixel) / canter_x_pixel  # (center_x - canter_x_pixel) should be (canter_x_pixel - center_x) if camera image is not flipped
+            angle = (canter_x_pixel - center_x) / canter_x_pixel
 
         self.pub.publish(angle)
 

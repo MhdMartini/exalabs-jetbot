@@ -23,7 +23,6 @@ from jetbot_msgs.msg import MotorSpeed
 from pid import PID
 import sys
 
-DEBUG = "DEBUG"
 
 NODE_NAME = "pid_angle_node"
 IN_TOPIC = "yellow_lane_angle"
@@ -39,7 +38,6 @@ V = 0.4  # vehicle velocity
 class PIDAngle:
     def __init__(self):
         rospy.Subscriber(IN_TOPIC, Float32, self.control, queue_size=1)
-        rospy.Subscriber(DEBUG, Float32, self.stop, queue_size=1)
 
         self.pub = rospy.Publisher(OUT_TOPIC, MotorSpeed, queue_size=1)
         self.pid = None
@@ -49,21 +47,21 @@ class PIDAngle:
         if self.pid is None:
             self.pid = PID()
         p_err, i_err, d_err = self.pid.add_error(msg.data)
-        ctrl = P * p_err + I * i_err + D * d_err
+        p, i, d = rospy.get_param('pid_angle')
+        ctrl = p * p_err + i * i_err + d * d_err
 
         msg = MotorSpeed()
-        msg.v = V
+        msg.v = rospy.get_param("velocity")
         msg.omega = ctrl
         self.pub.publish(msg)
 
-    def stop(self, msg):
-        ctrl = MotorSpeed()
-        ctrl.v = 0
-        ctrl.omega = 0
-        self.pub.publish(ctrl)
-        sys.exit(0)
+    def get_pid(self):
+        return rospy.get_param('pid_angle')
+
 
 if __name__ == "__main__":
     rospy.init_node(NODE_NAME, anonymous=True)
+    rospy.set_param("pid_angle", [P, I, D])
+    rospy.set_param("velocity", V)
     PIDAngle()
     rospy.spin()
