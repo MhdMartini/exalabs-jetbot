@@ -2,7 +2,7 @@
 """
 Node to filter out and publish a thresholded yellow lane image
 
-Subscribes to: camera/raw
+Subscribes to: camera/processed/cropped
 msg info:
     sensor_msgs/Image
 
@@ -22,7 +22,7 @@ from sensor_msgs.msg import Image
 
 
 NODE_NAME = "yellow_mask_node"
-IN_TOPIC = "camera/processed"
+IN_TOPIC = "camera/processed/cropped"
 OUT_TOPIC = "camera/yellow_mask"
 
 YELLOW = {
@@ -39,9 +39,7 @@ class YellowMask:
 
     def yellow_filter(self, msg):
         image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative. Image is upside down
-        image_cropped = image[msg.height // 2:, :]  # crop bottom half
-        mask_yellow = self.threshold_yellow(image_cropped)  # hsv filter -> mask
-
+        mask_yellow = self.threshold_yellow(image)  # hsv filter -> mask
         msg = Image()
         msg.data = bytes(mask_yellow.astype(np.uint8))
         msg.height = mask_yellow.shape[0]
