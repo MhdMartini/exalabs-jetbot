@@ -1,7 +1,0 @@
-<include file="$(find camera)/launch/camera.launch"/>
-
-  <group ns="jetbot">
-    <node pkg="hsv_finder" name="hsv_finder_node" type="hsv_finder.py"/>
-  </group>
-
-</launch>
