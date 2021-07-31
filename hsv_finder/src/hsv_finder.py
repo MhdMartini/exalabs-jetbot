@@ -10,9 +10,10 @@ IN_TOPIC = "camera/processed/cropped"
 OUT_TOPIC_1 = "hsv_finder/rect"
 OUT_TOPIC_2 = "hsv_finder/mask"
 
-OFFSET = 18  # rect width 18*2
+OFFSET = 16  # rect width 16*2
 COLOR = (255, 0, 0)
 THIKNESS = 2
+YELLOW_HSV_PARAM = "hsv_yellow"
 
 
 class HsvFinder:
@@ -28,24 +29,26 @@ class HsvFinder:
         start_point, end_point = self.draw_rect(img)
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         self.find_hsv(hsv, start_point, end_point)
-    
+
     def draw_rect(self, img):
-        start_point = (img.shape[1]//2 - OFFSET, 0)  # col, row
-        end_point = (img.shape[1]//2 + OFFSET, img.shape[0] - 1)
+        start_point = (img.shape[1] // 2 - OFFSET, 0)  # col, row
+        end_point = (img.shape[1] // 2 + OFFSET, img.shape[0] - 1)
         rect = cv2.rectangle(img, start_point, end_point, COLOR, THIKNESS)
         self.publish(self.pub_1, rect)
         return start_point, end_point
-    
+
     def find_hsv(self, hsv, start_point, end_point):
         start_col, start_row = start_point
         end_col, end_row = end_point
         hsv_cropped = hsv[start_row: end_row, start_col: end_col]
         h, s, v = cv2.split(hsv_cropped)
-        h_min, s_min, v_min = map(np.min, (h, s, v))
-        h_max, s_max, v_max = map(np.max, (h, s, v))
-        hsv_vals = {"lower": np.array((h_min, s_min, v_min)), "upper": np.array((h_max, s_max, v_max))}
+        lower = map(np.min, (h, s, v))
+        upper = map(np.max, (h, s, v))
+        hsv_vals = {"lower": lower, "upper": upper}
         rospy.logwarn(hsv_vals)
-        mask = cv2.inRange(hsv, hsv_vals["lower"], hsv_vals["upper"])
+        rospy.set_param(YELLOW_HSV_PARAM, hsv_vals)
+
+        mask = cv2.inRange(hsv, np.array(hsv_vals["lower"]), np.array(hsv_vals["upper"]))
         self.publish(self.pub_2, mask, encoding="mono8")
 
     def publish(self, publisher, img, encoding="bgr8"):
@@ -56,8 +59,6 @@ class HsvFinder:
         msg.encoding = encoding
         msg.step = len(msg.data) // msg.height
         publisher.publish(msg)
-
-
 
 
 if __name__ == "__main__":
