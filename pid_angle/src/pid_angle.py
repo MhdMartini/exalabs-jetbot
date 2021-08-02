@@ -26,12 +26,14 @@ from pid import PID
 NODE_NAME = "pid_angle_node"
 IN_TOPIC = "yellow_lane_angle"
 OUT_TOPIC = "motor_speed"
+PID_PARAM = "PID_ANGLE"
+VIL_PARAM = "VELOCITY"
 
 P = 0.2
 I = 0
 D = 0.12
 
-V = 0.32  # vehicle velocity
+V = 0  # vehicle velocity
 
 
 class PIDAngle:
@@ -46,11 +48,11 @@ class PIDAngle:
         if self.pid is None:
             self.pid = PID()
         p_err, i_err, d_err = self.pid.add_error(msg.data)
-        p, i, d = rospy.get_param('pid_angle')
+        p, i, d = rospy.get_param(PID_PARAM).values()
         ctrl = p * p_err + i * i_err + d * d_err
 
         msg = MotorSpeed()
-        msg.v = rospy.get_param("velocity")
+        msg.v = rospy.get_param(VIL_PARAM)
         msg.omega = ctrl
         self.pub.publish(msg)
 
@@ -60,7 +62,7 @@ class PIDAngle:
 
 if __name__ == "__main__":
     rospy.init_node(NODE_NAME, anonymous=True)
-    rospy.set_param("pid_angle", [P, I, D])
-    rospy.set_param("velocity", V)
+    rospy.set_param(PID_PARAM, {"P": P, "I": I, "D": D})
+    rospy.set_param(VIL_PARAM, V)
     PIDAngle()
     rospy.spin()
