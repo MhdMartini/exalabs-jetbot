@@ -13,7 +13,7 @@ OUT_TOPIC_2 = "hsv_finder/mask"
 OFFSET = 16  # rect width 16*2
 COLOR = (255, 0, 0)
 THIKNESS = 2
-YELLOW_HSV_PARAM = "hsv_yellow"
+YELLOW_HSV_PARAM = "HSV_YELLOW"
 
 
 class HsvFinder:
@@ -44,7 +44,7 @@ class HsvFinder:
         h, s, v = cv2.split(hsv_cropped)
         lower = map(np.min, (h, s, v))
         upper = map(np.max, (h, s, v))
-        hsv_vals = {"lower": lower, "upper": upper}
+        hsv_vals = {"LOWER": np.array(lower), "UPPER": np.array(upper)}
         rospy.logwarn(hsv_vals)
         rospy.set_param(YELLOW_HSV_PARAM, hsv_vals)
 

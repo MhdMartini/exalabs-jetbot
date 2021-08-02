@@ -29,11 +29,11 @@ OUT_TOPIC = "motor_speed"
 PID_PARAM = "PID_ANGLE"
 VIL_PARAM = "VELOCITY"
 
-P = 0.2
+P = 0.19
 I = 0
-D = 0.12
+D = 0.4
 
-V = 0  # vehicle velocity
+V = 0  # vehicle velocity - 0.3
 
 
 class PIDAngle:
