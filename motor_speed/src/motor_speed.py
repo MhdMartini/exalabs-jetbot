@@ -26,6 +26,9 @@ NODE_NAME = "motor_speed_node"
 IN_TOPIC = "motor_speed"
 OUT_TOPIC = "wheels_commands"
 
+TRIM_PARAM = "TRIM"
+TRIM_PARAM_DEFAULT = 0
+
 
 class _MotorSpeed:
     def __init__(self):
@@ -35,7 +38,7 @@ class _MotorSpeed:
     def speed_to_wheels(self, msg):
         # linear velocity v between -1, 1
         # angular velocity omega between -1, 1
-        v, omega = msg.v, msg.omega
+        v, omega = msg.v, msg.omega + rospy.get_param(TRIM_PARAM)
         left, right = -omega + v, omega + v
 
         WheelsCommands_msg = WheelsCommands()
@@ -46,5 +49,6 @@ class _MotorSpeed:
 
 if __name__ == '__main__':
     rospy.init_node(NODE_NAME, anonymous=True)
-    _MotorSpeed()    
+    rospy.set_param(TRIM_PARAM, TRIM_PARAM_DEFAULT)
+    _MotorSpeed()
     rospy.spin()
