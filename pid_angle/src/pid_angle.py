@@ -48,7 +48,8 @@ class PIDAngle:
         if self.pid is None:
             self.pid = PID()
         p_err, i_err, d_err = self.pid.add_error(msg.data)
-        p, i, d = rospy.get_param(PID_PARAM).values()
+        pid = rospy.get_param(PID_PARAM)
+        p, i, d = pid["P"], pid["I"], pid["D"]
         ctrl = p * p_err + i * i_err + d * d_err
 
         msg = MotorSpeed()
