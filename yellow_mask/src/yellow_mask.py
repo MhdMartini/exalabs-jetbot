@@ -24,15 +24,15 @@ from sensor_msgs.msg import Image
 NODE_NAME = "yellow_mask_node"
 IN_TOPIC = "camera/processed/cropped"
 OUT_TOPIC = "camera/yellow_mask"
-YELLOW_HSV_PARAM = "hsv_yellow"
+YELLOW_HSV_PARAM = "HSV_YELLOW"
 
 YELLOW = {
     # hsv range of yellow color.
     # IMPORTANT: Change for different lighting conditions using rosrun hsv_filter hsv_filter.py to set the hsv_yellow parameter
     # Make sure the camera node is running, and this node is also running (or whatever node that uses the hsv_yellow param) to make use of the new hsv values.
     # Otherwise, the values will just be logwarned, and the set parameter will not be used by any node
-    "lower": (25, 142, 110),
-    "upper": (39, 255, 207)
+    "LOWER": (25, 142, 110),
+    "UPPER": (39, 255, 207)
 }
 
 
@@ -49,7 +49,7 @@ class YellowMask:
     def threshold_yellow(self, image):
         image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         hsv_vals = rospy.get_param(YELLOW_HSV_PARAM)
-        mask_yellow = cv2.inRange(image_hsv, np.array(hsv_vals["lower"]), np.array(hsv_vals["upper"]))
+        mask_yellow = cv2.inRange(image_hsv, np.array(hsv_vals["LOWER"]), np.array(hsv_vals["UPPER"]))
         return mask_yellow
 
     def publish(self, image):
