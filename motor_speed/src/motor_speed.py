@@ -27,7 +27,7 @@ IN_TOPIC = "motor_speed"
 OUT_TOPIC = "wheels_commands"
 
 TRIM_PARAM = "TRIM"
-TRIM_PARAM_DEFAULT = 0
+TRIM_PARAM_DEFAULT = -0.014
 
 
 class _MotorSpeed:
