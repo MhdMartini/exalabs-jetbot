@@ -44,11 +44,11 @@ class HsvFinder:
         h, s, v = cv2.split(hsv_cropped)
         lower = list(map(np.min, (h, s, v)))
         upper = list(map(np.max, (h, s, v)))
-        hsv_vals = {"LOWER": np.array(lower), "UPPER": np.array(upper)}
+        hsv_vals = {"LOWER": lower, "UPPER": upper}
         rospy.logwarn(hsv_vals)
         rospy.set_param(YELLOW_HSV_PARAM, hsv_vals)
 
-        mask = cv2.inRange(hsv, np.array(hsv_vals["lower"]), np.array(hsv_vals["upper"]))
+        mask = cv2.inRange(hsv, np.array(hsv_vals["LOWER"]), np.array(hsv_vals["UPPER"]))
         self.publish(self.pub_2, mask, encoding="mono8")
 
     def publish(self, publisher, img, encoding="bgr8"):
