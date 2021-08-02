@@ -36,10 +36,10 @@ class _WheelsCommands:
         # ignore invalid commands
         left, right = msg.left, msg.right
         if not (-1 <= left <= 1):
-            rospy.logwarn(f"Invalid speed value {left} for left motor. Speed values should fall between 0 and 1.")
+            rospy.logwarn(f"Invalid speed value {left} for left motor. Speed values should fall between -1 and 1.")
             left = 0
         if not (-1 <= right <= 1):
-            rospy.logwarn(f"Invalid speed value {right} for right motor. Speed values should fall between 0 and 1.")
+            rospy.logwarn(f"Invalid speed value {right} for right motor. Speed values should fall between -1 and 1.")
             right = 0
         self.robot.set_motors(left, right)
 

@@ -57,9 +57,6 @@ class PIDAngle:
         msg.omega = ctrl
         self.pub.publish(msg)
 
-    def get_pid(self):
-        return rospy.get_param('pid_angle')
-
 
 if __name__ == "__main__":
     rospy.init_node(NODE_NAME, anonymous=True)
