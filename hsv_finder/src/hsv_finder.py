@@ -42,8 +42,8 @@ class HsvFinder:
         end_col, end_row = end_point
         hsv_cropped = hsv[start_row: end_row, start_col: end_col]
         h, s, v = cv2.split(hsv_cropped)
-        lower = map(np.min, (h, s, v))
-        upper = map(np.max, (h, s, v))
+        lower = list(map(np.min, (h, s, v)))
+        upper = list(map(np.max, (h, s, v)))
         hsv_vals = {"LOWER": np.array(lower), "UPPER": np.array(upper)}
         rospy.logwarn(hsv_vals)
         rospy.set_param(YELLOW_HSV_PARAM, hsv_vals)
