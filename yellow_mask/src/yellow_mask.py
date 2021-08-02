@@ -49,7 +49,7 @@ class YellowMask:
     def threshold_yellow(self, image):
         image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         hsv_vals = rospy.get_param(YELLOW_HSV_PARAM)
-        mask_yellow = cv2.inRange(image_hsv, hsv_vals["lower"], hsv_vals["upper"])
+        mask_yellow = cv2.inRange(image_hsv, np.array(hsv_vals["lower"]), np.array(hsv_vals["upper"]))
         return mask_yellow
 
     def publish(self, image):
