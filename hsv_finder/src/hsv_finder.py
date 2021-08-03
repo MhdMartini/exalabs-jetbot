@@ -37,7 +37,7 @@ class HSVFinder:
 
         return (start_left, start_mid, start_right), (end_left, end_mid, end_right)
 
-    def draw_rects(img, start_points, end_points):
+    def draw_rects(self, img, start_points, end_points):
         for start_point, end_point in zip(start_points, end_points):
             img = cv2.rectangle(img, start_point, end_point, COLOR, THIKNESS)
         return img
