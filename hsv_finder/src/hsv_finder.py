@@ -10,7 +10,7 @@ IN_TOPIC = "camera/processed/cropped"
 OUT_TOPIC_1 = "hsv_finder/rect"
 OUT_TOPIC_2 = "hsv_finder/mask"
 
-OFFSET = 16  # rect width 16*2
+OFFSET = 13  # rect width 13*2
 COLOR = (255, 0, 0)
 THIKNESS = 2
 YELLOW_HSV_PARAM = "HSV_YELLOW"
