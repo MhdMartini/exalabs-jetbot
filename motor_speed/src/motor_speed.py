@@ -34,17 +34,24 @@ class _MotorSpeed:
     def __init__(self):
         rospy.Subscriber(IN_TOPIC, MotorSpeed, self.speed_to_wheels, queue_size=1)
         self.pub = rospy.Publisher(OUT_TOPIC, WheelsCommands, queue_size=10)
+        rospy.on_shutdown(self.stop)
 
     def speed_to_wheels(self, msg):
         # linear velocity v between -1, 1
         # angular velocity omega between -1, 1
         v, omega = msg.v, msg.omega + rospy.get_param(TRIM_PARAM)
-        left, right = -omega + v, omega + v
+        self.command(v, omega)
 
+    def command(self, v, omega):
+        left, right = -omega + v, omega + v
         WheelsCommands_msg = WheelsCommands()
         WheelsCommands_msg.left = left
         WheelsCommands_msg.right = right
         self.pub.publish(WheelsCommands_msg)
+
+    def stop(self):
+        self.command(0, 0)
+        rospy.logwarn("MOTOR STOPPED")
 
 
 if __name__ == '__main__':

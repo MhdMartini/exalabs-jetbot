@@ -47,6 +47,8 @@ class PIDAngle:
         # receive angle error and control
         if self.pid is None:
             self.pid = PID()
+        if -0.02 <= msg.data <= 0.02:
+            self.pid.error_total = 0
         p_err, i_err, d_err = self.pid.add_error(msg.data)
         pid = rospy.get_param(PID_PARAM)
         p, i, d = pid["P"], pid["I"], pid["D"]

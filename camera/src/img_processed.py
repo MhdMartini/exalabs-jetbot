@@ -25,6 +25,7 @@ OUT_TOPIC_1 = "camera/processed"
 OUT_TOPIC_2 = "camera/processed/cropped"
 
 SCALE = 2
+OFFSET = 40
 
 class ImgProcess:
     def __init__(self):
@@ -38,7 +39,7 @@ class ImgProcess:
         im = cv2.resize(im, (msg.width // SCALE, msg.height // SCALE))  # resize image
         im_smooth = cv2.GaussianBlur(im, (5, 5), 0)
         self.publish(self.pub1, im_smooth)
-        cropped = im_smooth[im_smooth.shape[0]//2: , :]
+        cropped = im_smooth[im_smooth.shape[0]//2 - OFFSET: , :]
         self.publish(self.pub2, cropped)
 
     def publish(self, publisher, img):
