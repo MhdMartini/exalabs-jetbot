@@ -61,8 +61,8 @@ class HSVFinder:
 
         np_stack = np.hstack(stack)
         h, s, v = cv2.split(np_stack)
-        lower = [float(np.min(channel) for channel in (h, s, v))]
-        upper = [float(np.max(channel) for channel in (h, s, v))]
+        lower = [float(np.min(channel)) for channel in (h, s, v)]
+        upper = [float(np.max(channel)) for channel in (h, s, v)]
 
         return {"LOWER": lower, "UPPER": upper}
 
