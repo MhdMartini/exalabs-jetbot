@@ -31,7 +31,7 @@ MAX_VELOCITY = 0.4
 MIN_VELOCITY = 0
 SHARP_TURN = 0.15
 
-PARAM_CTRL_READY = "controller_ready"
+PARAM_CTRL_READY = "CONTROLLER_READY"
 
 
 class LaneFollowingAngleOnly:
@@ -59,10 +59,10 @@ class LaneFollowingAngleOnly:
 if __name__ == '__main__':
     rospy.init_node(NODE_NAME)
 
-    rospy.set_param(PARAM_CTRL_READY, "false")
+    rospy.set_param(PARAM_CTRL_READY, 0)
     rate = rospy.Rate(1)
-    while rospy.get_param(PARAM_CTRL_READY) != "true":
-        rospy.logwarn(f"Waiting for {PARAM_CTRL_READY} to be 'true'")
+    while rospy.get_param(PARAM_CTRL_READY) != 1:
+        rospy.logwarn(f"Waiting for {PARAM_CTRL_READY} to be 1")
         rate.sleep()
 
     LaneFollowingAngleOnly()
