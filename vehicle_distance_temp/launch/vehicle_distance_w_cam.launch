@@ -1,0 +1,9 @@
+<launch>
+
+<include file="$(find camera)/launch/camera.launch"/>
+
+  <group ns="jetbot">
+    <node pkg="vehicle_distance" name="vehicle_distance_node" type="vehicle_distance.py"/>
+  </group>
+
+</launch>

@@ -1,0 +1,8 @@
+<launch>
+
+  <group ns="jetbot">
+    <node pkg="pid_distance" name="pid_distance_node" type="pid_distance.py"/>
+    <node pkg="pid_distance" name="pid_distance_control_node" type="pid_distance_control.py"/>
+  </group>
+
+</launch>
