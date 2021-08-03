@@ -53,6 +53,7 @@ add_message_files(
   WheelsCommands.msg
   MotorSpeed.msg
   Vector2D.msg
+  PIDError.msg
 )
 
 ## Generate services in the 'srv' folder

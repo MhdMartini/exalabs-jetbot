@@ -27,6 +27,6 @@ class PID:
             # if we don't have two values yet
             return [error, error, 0]  # p, i, d
 
-        # dt = self.time_que[1] - self.time_que[0]
-        error_der = d_error  # / dt
+        dt = self.time_que[1] - self.time_que[0]
+        error_der = d_error / dt
         return [error, self.error_total, error_der]
