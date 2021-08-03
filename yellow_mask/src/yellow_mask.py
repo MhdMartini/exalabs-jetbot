@@ -31,8 +31,8 @@ YELLOW = {
     # IMPORTANT: Change for different lighting conditions using rosrun hsv_filter hsv_filter.py to set the hsv_yellow parameter
     # Make sure the camera node is running, and this node is also running (or whatever node that uses the hsv_yellow param) to make use of the new hsv values.
     # Otherwise, the values will just be logwarned, and the set parameter will not be used by any node
-    "LOWER": (25, 142, 110),
-    "UPPER": (39, 255, 207)
+    "LOWER": (22, 109, 111),
+    "UPPER": (120, 255, 255)
 }
 
 

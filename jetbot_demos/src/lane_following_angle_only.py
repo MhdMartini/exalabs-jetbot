@@ -27,10 +27,12 @@ NODE_NAME = "lane_following_angle_only_node"
 IN_TOPIC = "pid_angle_control"
 OUT_TOPIC = "motor_speed"
 
-MAX_VELOCITY = 0.4
+MAX_VELOCITY = 0.32
 MIN_VELOCITY = 0
-SHARP_TURN = 0.15
+SHARP_TURN = 0.1
 
+PARAM_MAX_VELOCITY = "MAX_VELOCITY"
+PARAM_MIN_VELOCITY = "MIN_VELOCITY"
 PARAM_CTRL_READY = "CONTROLLER_READY"
 
 
@@ -41,8 +43,8 @@ class LaneFollowingAngleOnly:
 
     def get_v(self, omega):
         if not (-SHARP_TURN <= omega <= SHARP_TURN):
-            return MIN_VELOCITY
-        return MAX_VELOCITY
+            return rospy.get_param(PARAM_MIN_VELOCITY)
+        return rospy.get_param(PARAM_MAX_VELOCITY)
 
     def publish(self, v, omega):
         msg = MotorSpeed()
@@ -65,5 +67,7 @@ if __name__ == '__main__':
         rospy.logwarn(f"Waiting for {PARAM_CTRL_READY} to be 1")
         rate.sleep()
 
+    rospy.set_param(PARAM_MIN_VELOCITY, MIN_VELOCITY)
+    rospy.set_param(PARAM_MAX_VELOCITY, MAX_VELOCITY)
     LaneFollowingAngleOnly()
     rospy.spin()
