@@ -1,6 +1,6 @@
 <launch>
 
-  <group ns="jetbot">
+  <group ns="">
     <node pkg="hsv_finder" name="hsv_finder_node" type="hsv_finder.py"/>
   </group>
 
