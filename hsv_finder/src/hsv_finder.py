@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 from sensor_msgs.msg import Image
 
-NODE_NAME = "/jetbot/hsv_finder_node"
+NODE_NAME = "hsv_finder_node"
 IN_TOPIC = "/jetbot/camera/processed/cropped"
 OUT_TOPIC_1 = "/jetbot/hsv_finder/rect"
 OUT_TOPIC_2 = "/jetbot/hsv_finder/mask"
