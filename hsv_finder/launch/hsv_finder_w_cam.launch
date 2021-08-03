@@ -2,9 +2,7 @@
 
 <include file="$(find camera)/launch/camera.launch"/>
 
-  <group ns="">
-    <node pkg="hsv_finder" name="hsv_finder_node" type="hsv_finder.py"/>
-  </group>
+<node pkg="hsv_finder" name="hsv_finder_node" type="hsv_finder.py"/>
 
 </launch>
 
