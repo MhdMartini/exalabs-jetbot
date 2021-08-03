@@ -76,7 +76,7 @@ class HSVFinder:
 
         start_points, end_points = self.get_rect_points(height, width)  # find rectangles' coordinates
         rects = self.draw_rects(img, start_points, end_points)  # draw rectangles on image
-        self.publish(self.pub1, rects)
+        self.publish(self.pub_1, rects)
 
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         hsv_vals = self.find_hsv(hsv, start_points, end_points)
