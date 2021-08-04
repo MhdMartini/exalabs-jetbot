@@ -10,7 +10,8 @@ IN_TOPIC = "/jetbot/camera/processed/cropped"
 OUT_TOPIC_1 = "/jetbot/hsv_finder/rect"
 OUT_TOPIC_2 = "/jetbot/hsv_finder/mask"
 
-OFFSET = 13  # rect width 13*2
+OFFSET_HOR = 13  # rect width 13*2
+OFFEST_VIR = 40
 COLOR = (255, 0, 0)
 THIKNESS = 2
 YELLOW_HSV_PARAM = "/jetbot/HSV_YELLOW"
@@ -24,12 +25,12 @@ class HSVFinder:
 
     def get_rect_points(self, height, width):
         # left rectangle
-        start_left = (0, 40)  # col, row
-        end_left = (OFFSET, height - 1)
+        start_left = (0, OFFEST_VIR)  # col, row
+        end_left = (OFFSET_HOR, height - 1)
 
         # mid rectangle
-        start_mid = (width // 2 - OFFSET, 0)
-        end_mid = (width // 2 + OFFSET, height - 1)
+        start_mid = (width // 2 - OFFSET_HOR, OFFEST_VIR)
+        end_mid = (width // 2 + OFFSET_HOR, height - 1)
 
         return (start_left, start_mid), (end_left, end_mid)
 
