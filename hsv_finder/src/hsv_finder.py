@@ -24,18 +24,14 @@ class HSVFinder:
 
     def get_rect_points(self, height, width):
         # left rectangle
-        start_left = (0, 0)  # col, row
+        start_left = (0, 40)  # col, row
         end_left = (OFFSET, height - 1)
 
         # mid rectangle
         start_mid = (width // 2 - OFFSET, 0)
         end_mid = (width // 2 + OFFSET, height - 1)
 
-        # right rectangle
-        start_right = (width - OFFSET, 0)
-        end_right = (width - 1, height - 1)
-
-        return (start_left, start_mid, start_right), (end_left, end_mid, end_right)
+        return (start_left, start_mid), (end_left, end_mid)
 
     def draw_rects(self, img, start_points, end_points):
         for start_point, end_point in zip(start_points, end_points):
