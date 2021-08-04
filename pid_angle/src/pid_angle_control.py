@@ -30,7 +30,7 @@ OUT_TOPIC = "pid_angle_control"
 
 PARAM_PID = "PID_ANGLE"
 
-P, I, D = 0.25, 0, 0.005
+P, I, D = 0.23, 0, 0.005
 
 
 class PIDAngleControl:
