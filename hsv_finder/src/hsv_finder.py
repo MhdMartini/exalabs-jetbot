@@ -1,9 +1,31 @@
 #!/usr/bin/env python3
+"""
+Node to subscribe to the camera/processed/cropped image and publish the detected HSV values
 
+Subscribes to: camera/processed/cropped
+msg info:
+    sensor_msgs/Image
+
+Published to: None
+
+Sets the required HSV parameter (HSV_YELLOW, HSV_BLUE, HSV_WHITE, etc.), or the parameter HSV_FINDER if not specified
+
+Examples:
+    rosrun hsv_finder hsv_finder.py yellow
+        sets the HSV_YELLOW parameter
+    rosrun hsv_finder hsv_finder.py blue
+        sets the HSV_BLUE parameter
+    rosrun hsv_finder hsv_finder.py
+        sets the HSV_FINDER parameter
+
+Mohamed Martini
+University of Massachusetts Lowell
+"""
 import rospy
 import numpy as np
 import cv2
 from sensor_msgs.msg import Image
+import sys
 
 NODE_NAME = "hsv_finder_node"
 IN_TOPIC = "/jetbot/camera/processed/cropped"
@@ -14,7 +36,14 @@ OFFSET_HOR = 13  # rect width 13*2
 OFFEST_VIR = 40
 COLOR = (255, 0, 0)
 THIKNESS = 2
-YELLOW_HSV_PARAM = "/jetbot/HSV_YELLOW"
+
+PARAMS_HSV = {
+    # add add colors the jetbot uses here. Keys are used as argv during the rosrun command
+    "yellow": "/jetbot/HSV_YELLOW",
+    "blue": "/jetbot/HSV_BLUE",
+    "white": "/jetbot/HSV_WHITE",
+    "default": "/jetbot/HSV_FINDER",
+}
 
 
 class HSVFinder:
@@ -65,7 +94,7 @@ class HSVFinder:
 
     def update_hsv(self, hsv_vals):
         rospy.logwarn(hsv_vals)
-        rospy.set_param(YELLOW_HSV_PARAM, hsv_vals)
+        rospy.set_param(PARAM_HSV, hsv_vals)
 
     def main(self, msg):
         height, width = msg.height, msg.width
@@ -83,7 +112,15 @@ class HSVFinder:
         self.publish(self.pub_2, mask, encoding="mono8")
 
 
+def get_param_hsv():
+    for arg in sys.argv:
+        if arg in PARAMS_HSV:
+            return PARAMS_HSV[arg]
+    return PARAMS_HSV["default"]
+
+
 if __name__ == "__main__":
     rospy.init_node(NODE_NAME)
+    PARAM_HSV = get_param_hsv()
     HSVFinder()
     rospy.spin()
