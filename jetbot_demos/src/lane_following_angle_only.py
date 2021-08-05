@@ -67,7 +67,9 @@ if __name__ == '__main__':
         rospy.logwarn(f"Waiting for {PARAM_CTRL_READY} to be 1")
         rate.sleep()
 
-    rospy.set_param(PARAM_MIN_VELOCITY, MIN_VELOCITY)
-    rospy.set_param(PARAM_MAX_VELOCITY, MAX_VELOCITY)
-    LaneFollowingAngleOnly()
-    rospy.spin()
+    if rospy.get_param(PARAM_CTRL_READY) == 1:
+        # this is in case Ctrl+C is used while in the while loop
+        rospy.set_param(PARAM_MIN_VELOCITY, MIN_VELOCITY)
+        rospy.set_param(PARAM_MAX_VELOCITY, MAX_VELOCITY)
+        LaneFollowingAngleOnly()
+        rospy.spin()
