@@ -54,15 +54,20 @@ class HSVFinder:
         self.pub_2 = rospy.Publisher(OUT_TOPIC_2, Image, queue_size=1)
 
     def get_rect_points(self, height, width):
+        start_points, end_points = [], []
         # left rectangle
         start_left = (0, OFFEST_VIR)  # col, row
         end_left = (OFFSET_HOR, height - 1)
+        start_points.append(start_left)
+        end_points.append(end_left)
 
         # mid rectangle
         start_mid = (width // 2 - OFFSET_HOR, OFFEST_VIR)
         end_mid = (width // 2 + OFFSET_HOR, height - 1)
+        start_points.append(start_mid)
+        end_points.append(end_mid)
 
-        return (start_left, start_mid), (end_left, end_mid)
+        return start_points, end_points
 
     def draw_rects(self, img, start_points, end_points):
         for start_point, end_point in zip(start_points, end_points):

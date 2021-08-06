@@ -1,0 +1,19 @@
+<launch>
+
+  <group ns="jetbot">
+
+      <!-- remap the color_mask_node -->
+      <node pkg="color_mask" name="yellow_mask_node" type="color_mask.py">
+
+          <rosparam>
+              HSV/LOWER: [1, 110, 150]
+              HSV/UPPER: [120, 255, 255]
+          </rosparam>
+
+          <remap from="in_topic" to="camera/processed/cropped"/>
+          <remap from="out_topic" to="yellow_mask"/>
+      </node>
+
+  </group>
+
+</launch>
