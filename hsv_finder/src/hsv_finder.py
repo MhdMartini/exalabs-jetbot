@@ -42,6 +42,7 @@ PARAMS_HSV = {
     "yellow": "/jetbot/HSV_YELLOW",
     "blue": "/jetbot/HSV_BLUE",
     "white": "/jetbot/HSV_WHITE",
+    "red": "/jetbot/HSV_RED",
     "default": "/jetbot/HSV_FINDER",
 }
 
