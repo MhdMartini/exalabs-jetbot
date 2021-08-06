@@ -50,38 +50,38 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>camera</build_depend>
+  <build_depend>color_mask</build_depend>
   <build_depend>jetbot_msgs</build_depend>
   <build_depend>motor_speed</build_depend>
+  <build_depend>object_distance</build_depend>
   <build_depend>pid</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
   <build_depend>sensor_msgs</build_depend>
   <build_depend>std_msgs</build_depend>
-  <build_depend>vehicle_distance</build_depend>
   <build_depend>yellow_lane_angle</build_depend>
-  <build_depend>yellow_mask</build_depend>
   <build_export_depend>camera</build_export_depend>
+  <build_export_depend>color_mask</build_export_depend>
   <build_export_depend>jetbot_msgs</build_export_depend>
   <build_export_depend>motor_speed</build_export_depend>
+  <build_export_depend>object_distance</build_export_depend>
   <build_export_depend>pid</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>rospy</build_export_depend>
   <build_export_depend>sensor_msgs</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
-  <build_export_depend>vehicle_distance</build_export_depend>
   <build_export_depend>yellow_lane_angle</build_export_depend>
-  <build_export_depend>yellow_mask</build_export_depend>
   <exec_depend>camera</exec_depend>
+  <exec_depend>color_mask</exec_depend>
   <exec_depend>jetbot_msgs</exec_depend>
   <exec_depend>motor_speed</exec_depend>
+  <exec_depend>object_distance</exec_depend>
   <exec_depend>pid</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>std_msgs</exec_depend>
-  <exec_depend>vehicle_distance</exec_depend>
   <exec_depend>yellow_lane_angle</exec_depend>
-  <exec_depend>yellow_mask</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

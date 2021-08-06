@@ -24,7 +24,7 @@ from std_msgs.msg import Float32
 
 
 NODE_NAME = "lane_following_angle_only_node"
-IN_TOPIC = "pid_angle_control"
+IN_TOPIC = "pid_control_angle"
 OUT_TOPIC = "motor_speed"
 
 MAX_VELOCITY = 0.32

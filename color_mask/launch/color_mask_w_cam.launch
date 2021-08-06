@@ -3,7 +3,7 @@
 <include file="$(find camera)/launch/camera.launch"/>
 
   <group ns="jetbot">
-    <node pkg="yellow_mask" name="yellow_mask_node" type="yellow_mask.py"/>
+    <node pkg="color_mask" name="color_mask_node" type="color_mask.py"/>
   </group>
 
 </launch>

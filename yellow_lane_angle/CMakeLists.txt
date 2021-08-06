@@ -8,6 +8,8 @@ project(yellow_lane_angle)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  camera
+  color_mask
   jetbot_msgs
   roscpp
   rospy
@@ -107,7 +109,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES yellow_lane_angle
-#  CATKIN_DEPENDS jetbot_msgs roscpp rospy sensor_msgs std_msgs
+#  CATKIN_DEPENDS camera color_mask jetbot_msgs roscpp rospy sensor_msgs std_msgs
 #  DEPENDS system_lib
 )
 

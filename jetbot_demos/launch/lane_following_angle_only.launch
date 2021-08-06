@@ -1,9 +1,9 @@
 <launch>
 
 <include file="$(find camera)/launch/camera.launch"/>
-<include file="$(find yellow_mask)/launch/yellow_mask.launch"/>
+<include file="$(find color_mask)/launch/color_mask.launch"/>
 <include file="$(find yellow_lane_angle)/launch/yellow_lane_angle.launch"/>
-<include file="$(find pid_angle)/launch/pid_angle.launch"/>
+<include file="$(find pid)/launch/pid_angle.launch"/>
 
 <include file="$(find motor_speed)/launch/motor_speed.launch"/>
 

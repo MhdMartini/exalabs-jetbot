@@ -9,16 +9,16 @@ project(jetbot_demos)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   camera
+  color_mask
   jetbot_msgs
   motor_speed
+  object_distance
   pid
   roscpp
   rospy
   sensor_msgs
   std_msgs
-  vehicle_distance
   yellow_lane_angle
-  yellow_mask
 )
 
 ## System dependencies are found with CMake's conventions
@@ -113,7 +113,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES jetbot_demos
-#  CATKIN_DEPENDS camera jetbot_msgs motor_speed pid roscpp rospy sensor_msgs std_msgs vehicle_distance yellow_lane_angle yellow_mask
+#  CATKIN_DEPENDS camera color_mask jetbot_msgs motor_speed object_distance pid roscpp rospy sensor_msgs std_msgs yellow_lane_angle
 #  DEPENDS system_lib
 )
 

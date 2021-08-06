@@ -27,7 +27,7 @@ class _WheelsCommands:
         if robot is None:
             robot = Robot()
         self.robot = robot
-        rospy.on_shutdown(lambda x: self.robot.set_motors(0, 0))
+        rospy.on_shutdown(lambda x: self.robot.stop())
 
         rospy.Subscriber(IN_TOPIC, WheelsCommands, self.command_wheels, queue_size=1)
 

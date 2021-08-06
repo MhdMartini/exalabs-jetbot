@@ -9,9 +9,11 @@ project(hsv_finder)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   camera
+  jetbot_msgs
   roscpp
   rospy
   sensor_msgs
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -71,7 +73,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   sensor_msgs
+#   jetbot_msgs#   sensor_msgs#   std_msgs
 # )
 
 ################################################
@@ -106,7 +108,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES hsv_finder
-#  CATKIN_DEPENDS camera roscpp rospy sensor_msgs
+#  CATKIN_DEPENDS camera jetbot_msgs roscpp rospy sensor_msgs std_msgs
 #  DEPENDS system_lib
 )
 
