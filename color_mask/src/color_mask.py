@@ -21,36 +21,33 @@ import numpy as np
 from sensor_msgs.msg import Image
 
 
-NODE_NAME = "yellow_mask_node"
-IN_TOPIC = "camera/processed/cropped"
-OUT_TOPIC = "camera/yellow_mask"
-YELLOW_HSV_PARAM = "HSV_YELLOW"
+NODE_NAME = "color_mask_node"
+IN_TOPIC = "in_topic"
+OUT_TOPIC = "out_topic"
 
-YELLOW = {
-    # hsv range of yellow color.
-    # IMPORTANT: Change for different lighting conditions using rosrun hsv_filter hsv_filter.py to set the hsv_yellow parameter
-    # Make sure the camera node is running, and this node is also running (or whatever node that uses the hsv_yellow param) to make use of the new hsv values.
-    # Otherwise, the values will just be logwarned, and the set parameter will not be used by any node
+PARAM_HSV = "HSV"
+PARAM_HSV_DEF = {
+    # yellow
     "LOWER": (1, 110, 150),
     "UPPER": (120, 255, 255)
 }
 
 
-class YellowMask:
+class ColorMask:
     def __init__(self):
-        rospy.Subscriber(IN_TOPIC, Image, self.yellow_filter, queue_size=1)
+        rospy.Subscriber(IN_TOPIC, Image, self.color_filter, queue_size=1)
         self.pub = rospy.Publisher(OUT_TOPIC, Image, queue_size=1)
 
-    def yellow_filter(self, msg):
+    def color_filter(self, msg):
         image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative. Image is upside down
-        mask_yellow = self.threshold_yellow(image)  # hsv filter -> mask
-        self.publish(mask_yellow)
+        mask = self.threshold_color(image)  # hsv filter -> mask
+        self.publish(mask)
 
-    def threshold_yellow(self, image):
+    def threshold_color(self, image):
         image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        hsv_vals = rospy.get_param(YELLOW_HSV_PARAM)
-        mask_yellow = cv2.inRange(image_hsv, np.array(hsv_vals["LOWER"]), np.array(hsv_vals["UPPER"]))
-        return mask_yellow
+        hsv_vals = rospy.get_param(PARAM_HSV)
+        mask = cv2.inRange(image_hsv, np.array(hsv_vals["LOWER"]), np.array(hsv_vals["UPPER"]))
+        return mask
 
     def publish(self, image):
         msg = Image()
@@ -64,6 +61,6 @@ class YellowMask:
 
 if __name__ == "__main__":
     rospy.init_node(NODE_NAME, anonymous=True)
-    rospy.set_param(YELLOW_HSV_PARAM, YELLOW)
-    YellowMask()
+    rospy.set_param(PARAM_HSV, PARAM_HSV_DEF)
+    ColorMask()
     rospy.spin()

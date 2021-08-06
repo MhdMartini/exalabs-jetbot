@@ -23,7 +23,7 @@ from std_msgs.msg import Float32
 
 
 NODE_NAME = "yellow_lane_angle_node"
-IN_TOPIC = "camera/yellow_mask"
+IN_TOPIC = "yellow_mask"
 OUT_TOPIC = "yellow_lane_angle"
 
 
