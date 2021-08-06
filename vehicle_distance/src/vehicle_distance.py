@@ -2,7 +2,7 @@
 """
 Node to publish distance to the jetbot in front.
 
-Subscribes to: camera/processed
+Subscribes to: camera/processed/cropped
 
 Publishes to: vehicle_distance
 msg info:
@@ -19,7 +19,7 @@ from sensor_msgs.msg import Image
 
 
 NODE_NAME = "vehicle_distance_node"
-IN_TOPIC = "camera/processed"
+IN_TOPIC = "camera/processed/cropped"
 OUT_TOPIC = "vehicle_distance"
 
 

@@ -1,8 +1,27 @@
 <launch>
 
   <group ns="jetbot">
-    <node pkg="pid_angle" name="pid_angle_node" type="pid_angle.py"/>
-    <node pkg="pid_angle" name="pid_angle_control_node" type="pid_angle_control.py"/>
+
+<!-- set default PID gains -->
+      <rosparam>
+          PID/P: 0.23
+          PID/I: 0
+          PID/D: 0.005
+      </rosparam>
+
+<!-- remap the pid_errors_node -->
+      <node pkg="pid" name="pid_errors_angle_node" type="pid_errors.py">
+          <param name="SMART_ERROR" value="1"/>
+          <remap from="/error_topic" to="/yellow_lane_angle"/>
+          <remap from="/pid_errors" to="/pid_errors_angle/>
+      </node>
+
+<!-- remap the pid_control_node -->
+      <node pkg="pid" name="pid_control_angle_node" type="pid_control.py">
+          <remap from="/pid_errors" to="/pid_errors_angle"/>
+          <remap from="/pid_control" to="/pid_control_angle"/>
+      </node>
+
   </group>
 
 </launch>

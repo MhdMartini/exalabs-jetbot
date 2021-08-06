@@ -11,8 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   camera
   jetbot_msgs
   motor_speed
-  pid_angle
-  pid_distance
+  pid
   roscpp
   rospy
   sensor_msgs
@@ -114,7 +113,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES jetbot_demos
-#  CATKIN_DEPENDS camera jetbot_msgs motor_speed pid_angle pid_distance roscpp rospy sensor_msgs std_msgs vehicle_distance yellow_lane_angle yellow_mask
+#  CATKIN_DEPENDS camera jetbot_msgs motor_speed pid roscpp rospy sensor_msgs std_msgs vehicle_distance yellow_lane_angle yellow_mask
 #  DEPENDS system_lib
 )
 
