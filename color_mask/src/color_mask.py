@@ -45,7 +45,7 @@ class ColorMask:
 
     def threshold_color(self, image):
         image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        hsv_vals = rospy.get_param(PARAM_HSV)
+        hsv_vals = rospy.get_param(PARAM_HSV, PARAM_HSV_DEF)
         mask = cv2.inRange(image_hsv, np.array(hsv_vals["LOWER"]), np.array(hsv_vals["UPPER"]))
         return mask
 
@@ -61,6 +61,5 @@ class ColorMask:
 
 if __name__ == "__main__":
     rospy.init_node(NODE_NAME, anonymous=True)
-    rospy.set_param(PARAM_HSV, PARAM_HSV_DEF)
     ColorMask()
     rospy.spin()
