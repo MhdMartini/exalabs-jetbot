@@ -22,17 +22,18 @@ import rospy
 from std_msgs.msg import Float32
 from jetbot_msgs.msg import PIDError
 from pid import PID
+import os
 
 
 NODE_NAME = "pid_errors_node"
 IN_TOPIC = "error_topic"
 OUT_TOPIC = "pid_errors"
 
-PARAM_SMART_ERROR = "SMART_ERROR"
+PARAM_SMART_ERROR = os.path.join(rospy.get_name(), "SMART_ERROR")
 PARAM_SMART_ERROR_DEF = 0
 
 # if error is zero and past error was <= 0.6, make current error = past_error. Only if SMART_ERROR = 1
-PARAM_LIMIT = "LIMIT"
+PARAM_LIMIT = os.path.join(rospy.get_name(), "LIMIT")
 PARAM_LIMIT_DEF = 0.6
 
 
@@ -64,7 +65,6 @@ class PIDErrorsSmart(PIDErrors):
         if error == 0:
             # check if it is really zero
             if abs(self.past_error) >= rospy.get_param(PARAM_LIMIT, PARAM_LIMIT_DEF):
-                # error = self.past_error
                 return self.past_error
         self.past_error = error
         return error

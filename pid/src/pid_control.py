@@ -22,18 +22,19 @@ University of Massachusetts Lowell
 import rospy
 from jetbot_msgs.msg import PIDError
 from std_msgs.msg import Float32
+import os
 
 
 NODE_NAME = "pid_control_node"
 IN_TOPIC = "pid_errors"
 OUT_TOPIC = "pid_control"
 
-PARAM_PID = "PID"
+PARAM_PID = os.path.join(rospy.get_name(), "PID")
 PARAM_PID_DEF = {
     # default pid parameters in case the PARAM_PID is not set in launch file
     "P": 0.14,
     "I": 0.0005,
-    "D": 0.035,
+    "D": 0.005,
 }
 
 

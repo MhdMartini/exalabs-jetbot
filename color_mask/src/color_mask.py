@@ -19,13 +19,14 @@ import rospy
 import cv2
 import numpy as np
 from sensor_msgs.msg import Image
+import os
 
 
 NODE_NAME = "color_mask_node"
 IN_TOPIC = "in_topic"
 OUT_TOPIC = "out_topic"
 
-PARAM_HSV = "HSV"
+PARAM_HSV = os.path.join(rospy.get_name(), "HSV")
 PARAM_HSV_DEF = {
     # yellow
     "LOWER": (1, 110, 150),
