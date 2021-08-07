@@ -38,7 +38,6 @@ class PIDControl:
 
     def get_gains(self):
         p = rospy.get_param(PARAM_P, PARAM_PID_DEF["P"])
-        rospy.logwarn(PARAM_P)
         i = rospy.get_param(PARAM_I, PARAM_PID_DEF["I"])
         d = rospy.get_param(PARAM_D, PARAM_PID_DEF["D"])
         return p, i, d
