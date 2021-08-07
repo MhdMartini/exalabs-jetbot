@@ -20,14 +20,7 @@ University of Massachusetts Lowell
 """
 import rospy
 from jetbot_msgs.msg import MotorSpeed, WheelsCommands
-
-
-NODE_NAME = "motor_speed_node"
-IN_TOPIC = "motor_speed"
-OUT_TOPIC = "wheels_commands"
-
-TRIM_PARAM = "TRIM"
-TRIM_PARAM_DEFAULT = -0.014
+import os
 
 
 class _MotorSpeed:
@@ -39,7 +32,7 @@ class _MotorSpeed:
     def speed_to_wheels(self, msg):
         # linear velocity v between -1, 1
         # angular velocity omega between -1, 1
-        v, omega = msg.v, msg.omega + rospy.get_param(TRIM_PARAM)
+        v, omega = msg.v, msg.omega + rospy.get_param(TRIM_PARAM, TRIM_PARAM_DEF)
         self.command(v, omega)
 
     def command(self, v, omega):
@@ -55,7 +48,14 @@ class _MotorSpeed:
 
 
 if __name__ == '__main__':
+    NODE_NAME = "motor_speed_node"
     rospy.init_node(NODE_NAME, anonymous=True)
-    rospy.set_param(TRIM_PARAM, TRIM_PARAM_DEFAULT)
+
+    IN_TOPIC = "motor_speed"
+    OUT_TOPIC = "wheels_commands"
+
+    TRIM_PARAM = os.path.join(os.get_name(), "TRIM")
+    TRIM_PARAM_DEF = -0.014
+
     _MotorSpeed()
     rospy.spin()
