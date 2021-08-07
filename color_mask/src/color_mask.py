@@ -22,17 +22,6 @@ from sensor_msgs.msg import Image
 import os
 
 
-NODE_NAME = "color_mask_node"
-IN_TOPIC = "in_topic"
-OUT_TOPIC = "out_topic"
-
-PARAM_HSV = os.path.join(rospy.get_name(), "HSV")
-PARAM_HSV_DEF = {
-    # yellow
-    "LOWER": (1, 110, 150),
-    "UPPER": (120, 255, 255)
-}
-
 
 class ColorMask:
     def __init__(self):
@@ -61,6 +50,18 @@ class ColorMask:
 
 
 if __name__ == "__main__":
+    NODE_NAME = "color_mask_node"
     rospy.init_node(NODE_NAME, anonymous=True)
+
+    IN_TOPIC = "in_topic"
+    OUT_TOPIC = "out_topic"
+
+    PARAM_HSV = os.path.join(rospy.get_name(), "HSV")
+    PARAM_HSV_DEF = {
+        # yellow
+        "LOWER": (1, 110, 150),
+        "UPPER": (120, 255, 255)
+    }
+
     ColorMask()
     rospy.spin()

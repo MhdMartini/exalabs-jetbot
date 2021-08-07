@@ -21,19 +21,7 @@ University of Massachusetts Lowell
 import rospy
 from jetbot_msgs.msg import MotorSpeed
 from std_msgs.msg import Float32
-
-
-NODE_NAME = "lane_following_angle_only_node"
-IN_TOPIC = "pid_control_angle"
-OUT_TOPIC = "motor_speed"
-
-MAX_VELOCITY = 0.32
-MIN_VELOCITY = 0.25
-SHARP_TURN = 0.1
-
-PARAM_MAX_VELOCITY = "MAX_VELOCITY"
-PARAM_MIN_VELOCITY = "MIN_VELOCITY"
-PARAM_CTRL_READY = "CONTROLLER_READY"
+import os
 
 
 class LaneFollowingAngleOnly:
@@ -42,9 +30,10 @@ class LaneFollowingAngleOnly:
         self.pub = rospy.Publisher(OUT_TOPIC, MotorSpeed, queue_size=1)
 
     def get_v(self, omega):
+        SHARP_TURN = rospy.get_param(PARAM_SHARP_TURN, PARAM_SHARP_TURN_DEF)
         if not (-SHARP_TURN <= omega <= SHARP_TURN):
-            return rospy.get_param(PARAM_MIN_VELOCITY)
-        return rospy.get_param(PARAM_MAX_VELOCITY)
+            return rospy.get_param(PARAM_MIN_VEL, PARAM_MIN_VEL_DEF)
+        return rospy.get_param(PARAM_MAX_VEL, PARAM_MAX_VEL_DEF)
 
     def publish(self, v, omega):
         msg = MotorSpeed()
@@ -59,7 +48,23 @@ class LaneFollowingAngleOnly:
 
 
 if __name__ == '__main__':
+    NODE_NAME = "lane_following_angle_only_node"
     rospy.init_node(NODE_NAME)
+
+    IN_TOPIC = "pid_control_angle"
+    OUT_TOPIC = "motor_speed"
+
+    PARAM_MAX_VEL = os.path.join(rospy.get_name(), "MAX_VELOCITY")
+    PARAM_MAX_VEL_DEF = 0.32
+
+    PARAM_MIN_VEL = os.path.join(rospy.get_name(), "MIN_VELOCITY")
+    PARAM_MIN_VEL_DEF = 0.25
+
+    PARAM_SHARP_TURN = os.path.join(rospy.get_name(), "SHARP_TURN")
+    PARAM_SHARP_TURN_DEF = 0.1
+
+    PARAM_CTRL_READY = os.path.join(rospy.get_name(), "CONTROLLER_READY")
+    PARAM_CTRL_READY_DEF = 0
 
     rospy.set_param(PARAM_CTRL_READY, 0)
     rate = rospy.Rate(1)
@@ -69,7 +74,5 @@ if __name__ == '__main__':
 
     if rospy.get_param(PARAM_CTRL_READY) == 1:
         # this is in case Ctrl+C is used while in the while loop
-        rospy.set_param(PARAM_MIN_VELOCITY, MIN_VELOCITY)
-        rospy.set_param(PARAM_MAX_VELOCITY, MAX_VELOCITY)
         LaneFollowingAngleOnly()
         rospy.spin()
