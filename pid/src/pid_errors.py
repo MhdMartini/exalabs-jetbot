@@ -25,18 +25,6 @@ from pid import PID
 import os
 
 
-NODE_NAME = "pid_errors_node"
-IN_TOPIC = "error_topic"
-OUT_TOPIC = "pid_errors"
-
-PARAM_SMART_ERROR = os.path.join(rospy.get_name(), "SMART_ERROR")
-PARAM_SMART_ERROR_DEF = 0
-
-# if error is zero and past error was <= 0.6, make current error = past_error. Only if SMART_ERROR = 1
-PARAM_LIMIT = os.path.join(rospy.get_name(), "LIMIT")
-PARAM_LIMIT_DEF = 0.6
-
-
 class PIDErrors:
     def __init__(self):
         rospy.Subscriber(IN_TOPIC, Float32, self.main, queue_size=1)
@@ -71,7 +59,19 @@ class PIDErrorsSmart(PIDErrors):
 
 
 if __name__ == "__main__":
+    NODE_NAME = "pid_errors_node"
     rospy.init_node(NODE_NAME, anonymous=True)
+
+    IN_TOPIC = "error_topic"
+    OUT_TOPIC = "pid_errors"
+
+    # if error is zero and past error was <= 0.6, make current error = past_error. Only if SMART_ERROR = 1
+    PARAM_LIMIT = os.path.join(rospy.get_name(), "LIMIT")
+    PARAM_LIMIT_DEF = 0.6
+
+    PARAM_SMART_ERROR = os.path.join(rospy.get_name(), "SMART_ERROR")
+    PARAM_SMART_ERROR_DEF = 0
+
     SMART = rospy.get_param(PARAM_SMART_ERROR, PARAM_SMART_ERROR_DEF)
     if SMART:
         PIDErrorsSmart()

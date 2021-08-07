@@ -69,7 +69,7 @@ if __name__ == '__main__':
     rospy.set_param(PARAM_CTRL_READY, 0)
     rate = rospy.Rate(1)
     while rospy.get_param(PARAM_CTRL_READY) != 1:
-        rospy.logwarn(f"Waiting for {PARAM_CTRL_READY} to be 1")
+        rospy.logwarn(f"Waiting for 'CONTROLLER_READY' to be 1")
         rate.sleep()
 
     if rospy.get_param(PARAM_CTRL_READY) == 1:
