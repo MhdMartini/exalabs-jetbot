@@ -29,7 +29,10 @@ NODE_NAME = "pid_control_node"
 IN_TOPIC = "pid_errors"
 OUT_TOPIC = "pid_control"
 
-PARAM_PID = os.path.join(rospy.get_name(), "PID")
+PARAM_P = os.path.join(rospy.get_name(), "PID/P")
+PARAM_I = os.path.join(rospy.get_name(), "PID/I")
+PARAM_D = os.path.join(rospy.get_name(), "PID/D")
+
 PARAM_PID_DEF = {
     # default pid parameters in case the PARAM_PID is not set in launch file
     "P": 0.14,
@@ -50,8 +53,10 @@ class PIDControl:
         self.pub.publish(omega)
 
     def get_gains(self):
-        pid_gains = rospy.get_param(PARAM_PID, PARAM_PID_DEF)
-        p, i, d = pid_gains["P"], pid_gains["I"], pid_gains["D"]
+        p = rospy.get_param(PARAM_P, PARAM_PID_DEF["P"])
+        rospy.logwarn(PARAM_P)
+        i = rospy.get_param(PARAM_I, PARAM_PID_DEF["I"])
+        d = rospy.get_param(PARAM_D, PARAM_PID_DEF["D"])
         return p, i, d
 
     def get_omega(self, pid_angle, gains):
