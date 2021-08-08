@@ -73,14 +73,7 @@ class HSVFinder:
         msg.step = len(msg.data) // msg.height
         publisher.publish(msg)
 
-    def find_hsv(self, hsv, start_points, end_points):
-        stack = []
-        for start_point, end_point in zip(start_points, end_points):
-            start_col, start_row = start_point
-            end_col, end_row = end_point
-            hsv_cropped = hsv[start_row: end_row, start_col: end_col]
-            stack.append(hsv_cropped)
-
+    def find_hsv(self, stack):
         np_stack = np.hstack(stack)
         h, s, v = cv2.split(np_stack)
         lower = [float(np.min(channel)) for channel in (h, s, v)]
@@ -96,17 +89,24 @@ class HSVFinder:
         height, width = msg.height, msg.width
         img = np.frombuffer(msg.data, dtype=np.uint8).reshape(height, width, -1)  # cv_bridge alternative
         img_rect = np.copy(img)
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
         params_rect = (PARAM_RECT_LEFT, PARAM_RECT_CENTER, PARAM_RECT_RIGHT)
         start_points, end_points = self.get_rect_points(height, width)
+        stack = []
         for param, start_point, end_point in zip(params_rect, start_points, end_points):
             if not rospy.get_param(param):
                 continue
             img_rect = cv2.rectangle(img_rect, start_point, end_point, COLOR, THIKNESS)
+
+            start_col, start_row = start_point
+            end_col, end_row = end_point
+            hsv_cropped = hsv[start_row: end_row, start_col: end_col]
+            stack.append(hsv_cropped)
+
         self.publish(self.pub_1, img_rect)
 
-        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-        hsv_vals = self.find_hsv(hsv, start_points, end_points)
+        hsv_vals = self.find_hsv(stack)
         self.update_hsv(hsv_vals)
 
         mask = cv2.inRange(hsv, np.array(hsv_vals["LOWER"]), np.array(hsv_vals["UPPER"]))
