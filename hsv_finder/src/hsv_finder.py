@@ -90,7 +90,7 @@ class HSVFinder:
 
     def update_hsv(self, hsv_vals):
         rospy.logwarn(hsv_vals)
-        rospy.set_param(PARAM_PARAM_TO_SET, hsv_vals)
+        rospy.set_param(rospy.get_param(PARAM_PARAM_TO_SET), hsv_vals)
 
     def main(self, msg):
         height, width = msg.height, msg.width
