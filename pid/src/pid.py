@@ -30,3 +30,6 @@ class PID:
         dt = self.time_que[1] - self.time_que[0]
         error_der = d_error / dt
         return [error, self.error_total, error_der]
+
+    def reset(self):
+        self.error_total = 0

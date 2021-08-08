@@ -27,10 +27,12 @@ import os
 
 class PIDErrors:
     def __init__(self):
+        self.pid = PID()
+
         rospy.Subscriber(IN_TOPIC, Float32, self.main, queue_size=1)
+        rospy.Subscriber(RESET_TOPIC, Float32, lambda x: self.pid.reset(), queue_size=1)
         self.pub = rospy.Publisher(OUT_TOPIC, PIDError, queue_size=1)
 
-        self.pid = PID()
         self.past_error = 0
 
     def publish(self, error_tuple):
@@ -63,11 +65,12 @@ if __name__ == "__main__":
     rospy.init_node(NODE_NAME, anonymous=True)
 
     IN_TOPIC = "error_topic"
+    RESET_TOPIC = "reset"
     OUT_TOPIC = "pid_errors"
 
     # if error is zero and past error was <= 0.6, make current error = past_error. Only if SMART_ERROR = 1
     PARAM_LIMIT = os.path.join(rospy.get_name(), "LIMIT")
-    PARAM_LIMIT_DEF = 0.6
+    PARAM_LIMIT_DEF = 0.35
 
     PARAM_SMART_ERROR = os.path.join(rospy.get_name(), "SMART_ERROR")
     PARAM_SMART_ERROR_DEF = 0
