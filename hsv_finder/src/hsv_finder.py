@@ -25,26 +25,11 @@ import rospy
 import numpy as np
 import cv2
 from sensor_msgs.msg import Image
+from std_msgs.msg import String
 import sys
+import os
 
-NODE_NAME = "hsv_finder_node"
-IN_TOPIC = "/jetbot/camera/processed/cropped"
-OUT_TOPIC_1 = "/jetbot/hsv_finder/rect"
-OUT_TOPIC_2 = "/jetbot/hsv_finder/mask"
-
-OFFSET_HOR = 13  # rect width 13*2
-OFFEST_VIR = 40
-COLOR = (255, 0, 0)
-THIKNESS = 2
-
-PARAMS_HSV = {
-    # add add colors the jetbot uses here. Keys are used as argv during the rosrun command
-    "yellow": "/jetbot/HSV_YELLOW",
-    "blue": "/jetbot/HSV_BLUE",
-    "white": "/jetbot/HSV_WHITE",
-    "red": "/jetbot/HSV_RED",
-    "default": "/jetbot/HSV_FINDER",
-}
+NAME_SPACE = "/jetbot"
 
 
 class HSVFinder:
@@ -53,21 +38,26 @@ class HSVFinder:
         self.pub_1 = rospy.Publisher(OUT_TOPIC_1, Image, queue_size=1)
         self.pub_2 = rospy.Publisher(OUT_TOPIC_2, Image, queue_size=1)
 
+    def change_set_parameter(self):
+        pass
+
     def get_rect_points(self, height, width):
-        start_points, end_points = [], []
+        offset = rospy.get_param(PARAM_OFFSET)
+        rect_width = rospy.get_param(PARAM_RECT_WIDTH)
+
         # left rectangle
-        start_left = (0, OFFEST_VIR)  # col, row
-        end_left = (OFFSET_HOR, height - 1)
-        start_points.append(start_left)
-        end_points.append(end_left)
+        start_left = (0, offset)  # col, row
+        end_left = (rect_width // 2, height - 1)
 
         # mid rectangle
-        start_mid = (width // 2 - OFFSET_HOR, OFFEST_VIR)
-        end_mid = (width // 2 + OFFSET_HOR, height - 1)
-        start_points.append(start_mid)
-        end_points.append(end_mid)
+        start_center = (width // 2 - rect_width // 2, offset)
+        end_center = (width // 2 + rect_width // 2, height - 1)
 
-        return start_points, end_points
+        # right rectangle
+        start_right = (width - rect_width // 2, offset)
+        end_right = (width - 1, height - 1)
+
+        return (start_left, start_center, start_right), (end_left, end_center, end_right)
 
     def draw_rects(self, img, start_points, end_points):
         for start_point, end_point in zip(start_points, end_points):
@@ -100,15 +90,20 @@ class HSVFinder:
 
     def update_hsv(self, hsv_vals):
         rospy.logwarn(hsv_vals)
-        rospy.set_param(PARAM_HSV, hsv_vals)
+        rospy.set_param(PARAM_PARAM_TO_SET, hsv_vals)
 
     def main(self, msg):
         height, width = msg.height, msg.width
         img = np.frombuffer(msg.data, dtype=np.uint8).reshape(height, width, -1)  # cv_bridge alternative
+        img_rect = np.copy(img)
 
-        start_points, end_points = self.get_rect_points(height, width)  # find rectangles' coordinates
-        rects = self.draw_rects(img, start_points, end_points)  # draw rectangles on image
-        self.publish(self.pub_1, rects)
+        params_rect = (PARAM_RECT_LEFT, PARAM_RECT_CENTER, PARAM_RECT_RIGHT)
+        start_points, end_points = self.get_rect_points()
+        for param, start_point, end_point in zip(params_rect, start_points, end_points):
+            if not rospy.get_param(param):
+                continue
+            img_rect = cv2.rectangle(img_rect, start_point, end_point, COLOR, THIKNESS)
+        self.publish(self.pub_1, img_rect)
 
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         hsv_vals = self.find_hsv(hsv, start_points, end_points)
@@ -118,15 +113,48 @@ class HSVFinder:
         self.publish(self.pub_2, mask, encoding="mono8")
 
 
-def get_param_hsv():
-    for arg in sys.argv:
-        if arg in PARAMS_HSV:
-            return PARAMS_HSV[arg]
-    return PARAMS_HSV["default"]
-
-
 if __name__ == "__main__":
+    NODE_NAME = "hsv_finder_node"
     rospy.init_node(NODE_NAME)
-    PARAM_HSV = get_param_hsv()
+
+    IN_TOPIC = os.path.join(NAME_SPACE, "camera/processed/cropped")
+
+    OUT_TOPIC_1 = os.path.join(NAME_SPACE, rospy.get_name(), "rect")
+    OUT_TOPIC_2 = os.path.join(NAME_SPACE, rospy.get_name(), "mask")
+
+    PARAM_PARAM_TO_SET = os.path.join(NAME_SPACE, rospy.get_name(), "PARAM_TO_SET")
+    PARAM_PARAM_TO_SET_DEF = "none"
+    rospy.set_param(PARAM_PARAM_TO_SET, PARAM_PARAM_TO_SET_DEF)
+
+    PARAM_RECT_WIDTH = os.path.join(NAME_SPACE, rospy.get_name(), "RECT_WIDTH")
+    PARAM_RECT_WIDTH_DEF = 26  # width of rectangle
+    rospy.set_param(PARAM_RECT_WIDTH, PARAM_RECT_WIDTH_DEF)
+
+    PARAM_OFFSET = os.path.join(NAME_SPACE, rospy.get_name(), "OFFSET")
+    PARAM_OFFSET_DEF = 40  # all height but top 40 pixles
+    rospy.set_param(PARAM_OFFSET, PARAM_OFFSET_DEF)
+
+    PARAM_RECT_LEFT = os.path.join(NAME_SPACE, rospy.get_name(), "RECT_LEFT")
+    PARAM_RECT_LEFT_DEF = 0
+    rospy.set_param(PARAM_RECT_LEFT, PARAM_RECT_LEFT_DEF)
+
+    PARAM_RECT_CENTER = os.path.join(NAME_SPACE, rospy.get_name(), "RECT_CENTER")
+    PARAM_RECT_CENTER_DEF = 1
+    rospy.set_param(PARAM_RECT_CENTER, PARAM_RECT_CENTER_DEF)
+
+    PARAM_RECT_RIGHT = os.path.join(NAME_SPACE, rospy.get_name(), "RECT_RIGHT")
+    PARAM_RECT_RIGHT_DEF = 0
+    rospy.set_param(PARAM_RECT_RIGHT, PARAM_RECT_RIGHT_DEF)
+
+    COLOR = (255, 0, 0)  # rect color and thikness
+    THIKNESS = 2
+
+    rate = rospy.Rate(0.5)
+    while not rospy.is_shutdown():
+        if rospy.get_param(PARAM_PARAM_TO_SET) != "none":
+            break
+        rospy.logwarn("Please set the 'PARAM_TO_SET' parameter with the full name of the HSV parameter you wish to modify")
+        rate.sleep()
+
     HSVFinder()
     rospy.spin()
