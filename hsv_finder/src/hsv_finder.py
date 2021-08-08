@@ -98,7 +98,7 @@ class HSVFinder:
         img_rect = np.copy(img)
 
         params_rect = (PARAM_RECT_LEFT, PARAM_RECT_CENTER, PARAM_RECT_RIGHT)
-        start_points, end_points = self.get_rect_points()
+        start_points, end_points = self.get_rect_points(height, width)
         for param, start_point, end_point in zip(params_rect, start_points, end_points):
             if not rospy.get_param(param):
                 continue
