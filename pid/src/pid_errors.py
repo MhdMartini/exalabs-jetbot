@@ -45,7 +45,8 @@ class PIDErrors:
         return error
 
     def main(self, msg):
-        error = self.get_error(msg.data)
+        val = self.get_error(msg.data)
+        error = val - rospy.get_param(PARAM_DESIRED, PARAM_DESIRED_DEF)
         error_tuple = self.pid.add_error(error)
         self.publish(error_tuple)
 
@@ -67,6 +68,9 @@ if __name__ == "__main__":
     IN_TOPIC = "in_topic"
     RESET_TOPIC = "reset"
     OUT_TOPIC = "out_topic"
+
+    PARAM_DESIRED = os.path.join(rospy.get_name(), "DESIRED")
+    PARAM_DESIRED_DEF = 0
 
     # if error is zero and past error was <= 0.6, make current error = past_error. Only if SMART_ERROR = 1
     PARAM_LIMIT = os.path.join(rospy.get_name(), "LIMIT")
