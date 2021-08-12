@@ -40,8 +40,7 @@ class ObjectCentroid:
         except ZeroDivisionError:  # no lane is detected
             return None
 
-    def normalize(self, image, point):
-        height, width = image.shape
+    def normalize(self, height, width, point):
         col, row = point
         return (col / width, row / height)
 
@@ -55,7 +54,7 @@ class ObjectCentroid:
         centroid = self.find_centroid(mask)
         if centroid is None:
             self.publish((-1, -1))
-        centroid_norm = self.normalize(mask, centroid)
+        centroid_norm = self.normalize(msg.height, msg.width, centroid)
         self.publish(centroid_norm)
 
 
