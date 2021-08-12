@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Node to receive a binary mask and publish the centroid of that mask. If mask is empty, centroid is -1, -1
+Node to receive a binary mask and publish the normalized centroid of that mask. If mask is empty, centroid is -1, -1
 
 Example use:
     Subscribes to: camera/color_mask
