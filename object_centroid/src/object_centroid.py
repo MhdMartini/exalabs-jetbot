@@ -54,6 +54,7 @@ class ObjectCentroid:
         centroid = self.find_centroid(mask)
         if centroid is None:
             self.publish((-1, -1))
+            return
         centroid_norm = self.normalize(msg.height, msg.width, centroid)
         self.publish(centroid_norm)
 
