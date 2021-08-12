@@ -6,8 +6,8 @@
       <node pkg="color_mask" name="red_mask_node" type="color_mask.py">
 
           <rosparam>
-              HSV/LOWER: [0, 135, 67]
-              HSV/UPPER: [179, 234, 112]
+              HSV/LOWER: [168, 141, 144]
+              HSV/UPPER: [174, 162, 173]
           </rosparam>
 
           <remap from="in_topic" to="camera/processed/cropped"/>
