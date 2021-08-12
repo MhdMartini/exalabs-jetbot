@@ -64,9 +64,9 @@ if __name__ == "__main__":
     NODE_NAME = "pid_errors_node"
     rospy.init_node(NODE_NAME, anonymous=True)
 
-    IN_TOPIC = "error_topic"
+    IN_TOPIC = "in_topic"
     RESET_TOPIC = "reset"
-    OUT_TOPIC = "pid_errors"
+    OUT_TOPIC = "out_topic"
 
     # if error is zero and past error was <= 0.6, make current error = past_error. Only if SMART_ERROR = 1
     PARAM_LIMIT = os.path.join(rospy.get_name(), "LIMIT")

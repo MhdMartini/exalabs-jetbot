@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """
-Node to subscribe to pid_angle errors and publish the control signals omega.
+Lane following Node. Subscribes to error control topics and publishes to the motor
 
 Example use:
     Subscribes to: pid_angle_control
-    msg info:
-        std_msgs/Float32
-            omega   Float32
+        msg info:
+            std_msgs/Float32
+                omega   Float32
 
     Publishes to: motor_speed
-    msg info:
-        jetbot_msgs/MotorSpeed
-            v       Float32
-            omega   Float32
+        msg info:
+            jetbot_msgs/MotorSpeed
+                v       Float32
+                omega   Float32
 
 
 Mohamed Martini

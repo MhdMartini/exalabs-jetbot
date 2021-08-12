@@ -52,8 +52,8 @@ if __name__ == '__main__':
     NODE_NAME = "pid_control_node"
     rospy.init_node(NODE_NAME)
 
-    IN_TOPIC = "pid_errors"
-    OUT_TOPIC = "pid_control"
+    IN_TOPIC = "in_topic"
+    OUT_TOPIC = "out_topic"
 
     PARAM_P = os.path.join(rospy.get_name(), "PID/P")
     PARAM_I = os.path.join(rospy.get_name(), "PID/I")

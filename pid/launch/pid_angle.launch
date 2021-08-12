@@ -6,8 +6,8 @@
       <node pkg="pid" name="pid_errors_angle_node" type="pid_errors.py">
           <param name="SMART_ERROR" value="1"/>
           <param name="LIMIT" value="0.6"/>
-          <remap from="error_topic" to="yellow_lane_angle"/>
-          <remap from="pid_errors" to="pid_errors_angle"/>
+          <remap from="in_topic" to="yellow_lane_angle"/>
+          <remap from="out_topic" to="pid_errors_angle"/>
       </node>
 
 <!-- remap the pid_control_node -->
@@ -18,8 +18,8 @@
               PID/D: 0.005
           </rosparam>
 
-          <remap from="pid_errors" to="pid_errors_angle"/>
-          <remap from="pid_control" to="pid_control_angle"/>
+          <remap from="in_topic" to="pid_errors_angle"/>
+          <remap from="out_topic" to="pid_control_angle"/>
       </node>
 
   </group>
