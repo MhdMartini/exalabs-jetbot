@@ -4,7 +4,7 @@
 
       <!-- remap the color_mask_node -->
       <node pkg="object_centroid" name="yellow_centroid_node" type="object_centroid.py">
-          <remap from="in_topic" to="camera/processed/cropped"/>
+          <remap from="in_topic" to="yellow_mask"/>
           <remap from="out_topic" to="yellow_centroid"/>
       </node>
 
