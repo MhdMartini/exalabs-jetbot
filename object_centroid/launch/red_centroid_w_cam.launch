@@ -1,0 +1,16 @@
+<launch>
+
+<include file="$(find camera)/launch/camera.launch"/>
+<include file="$(find color_mask)/launch/red_mask.launch"/>
+
+  <group ns="jetbot">
+
+      <!-- remap the color_mask_node -->
+      <node pkg="object_centroid" name="red_centroid_node" type="object_centroid.py">
+          <remap from="in_topic" to="red_mask"/>
+          <remap from="out_topic" to="red_centroid"/>
+      </node>
+
+  </group>
+
+</launch>
