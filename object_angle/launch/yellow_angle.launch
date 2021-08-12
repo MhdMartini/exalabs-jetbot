@@ -1,0 +1,12 @@
+<launch>
+
+  <group ns="jetbot">
+
+      <node pkg="object_angle" name="yellow_angle_node" type="object_angle.py">
+          <remap from="in_topic" to="yellow_centroid"/>
+          <remap from="out_topic" to="yellow_angle"/>
+      </node>
+
+  </group>
+
+</launch>
