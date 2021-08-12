@@ -2,16 +2,17 @@
 """
 Node to subscribe to pid_angle errors and publish the control signals omega.
 
-Subscribes to: pid_angle_control
-msg info:
-    std_msgs/Float32
-        omega   Float32
+Example use:
+    Subscribes to: pid_angle_control
+    msg info:
+        std_msgs/Float32
+            omega   Float32
 
-Publishes to: motor_speed
-msg info:
-    jetbot_msgs/MotorSpeed
-        v       Float32
-        omega   Float32
+    Publishes to: motor_speed
+    msg info:
+        jetbot_msgs/MotorSpeed
+            v       Float32
+            omega   Float32
 
 
 Mohamed Martini
