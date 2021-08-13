@@ -58,6 +58,7 @@ class ObjectSlope:
             points = self.get_points(image)
         except IndexError:
             self.publish(SLOPE_DEF)
+            rospy.logwarn("No points detected!")
             return
 
         opp, adj = self.find_op_adj(points)
