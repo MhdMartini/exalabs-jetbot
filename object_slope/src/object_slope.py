@@ -29,7 +29,7 @@ class ObjectSlope:
         self.pub = rospy.Publisher(OUT_TOPIC, Float32, queue_size=1)
 
     def get_points(self, image):
-        points = np.any(image == 255)
+        points = np.where(image == 255)
         top_point_row = points[0][0]
         top_point_col = points[1][0]
         bottom_point_row = points[0][-1]
@@ -58,7 +58,6 @@ class ObjectSlope:
             points = self.get_points(image)
         except IndexError:
             self.publish(SLOPE_DEF)
-            rospy.logwarn("No points detected!")
             return
 
         opp, adj = self.find_op_adj(points)
