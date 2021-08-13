@@ -53,7 +53,7 @@ class ObjectCentroid:
         mask = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative
         centroid = self.find_centroid(mask)
         if centroid is None:
-            self.publish((-1, -1))
+            self.publish(CENTROID_DEF)
             return
         centroid_norm = self.normalize(msg.height, msg.width, centroid)
         self.publish(centroid_norm)
@@ -66,6 +66,7 @@ if __name__ == "__main__":
 
     IN_TOPIC = "in_topic"
     OUT_TOPIC = "out_topic"
+    CENTROID_DEF = (-1, -1)
 
     ObjectCentroid()
     rospy.spin()

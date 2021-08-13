@@ -6,7 +6,7 @@
           <param name="SMART_ERROR" value="1"/>
           <param name="LIMIT" value="0.6"/>
           <param name="DESIRED" value="0"/>
-          <remap from="in_topic" to="yellow_lane_angle"/>
+          <remap from="in_topic" to="yellow_angle"/>
           <remap from="out_topic" to="pid_errors_angle"/>
       </node>
 
