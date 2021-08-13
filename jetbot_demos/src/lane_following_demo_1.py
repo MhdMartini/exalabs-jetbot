@@ -54,7 +54,6 @@ class LaneFollowingDemo1:
         v_max = rospy.get_param(PARAM_MAX_VEL, PARAM_MAX_VEL_DEF)
         v_def = v_max - abs(self.omega) * (v_max - v_min)  # default velocity inversely proportional to omega
         self.v += v_def
-        self.main()
 
     def publish(self):
         msg = MotorSpeed()
