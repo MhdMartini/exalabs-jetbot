@@ -33,7 +33,7 @@ class ObjectAngle:
     def main(self, msg):
         center_x = msg.x
         angle = self.calc_angle(center_x) if center_x != -1 else 0
-        self.publish(angle)
+        self.pub.publish(angle)
 
 
 if __name__ == "__main__":
