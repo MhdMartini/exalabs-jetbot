@@ -22,14 +22,13 @@ from sensor_msgs.msg import Image
 import os
 
 
-
 class ColorMask:
     def __init__(self):
         rospy.Subscriber(IN_TOPIC, Image, self.color_filter, queue_size=1)
         self.pub = rospy.Publisher(OUT_TOPIC, Image, queue_size=1)
 
     def color_filter(self, msg):
-        image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative. Image is upside down
+        image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative
         mask = self.threshold_color(image)  # hsv filter -> mask
         self.publish(mask)
 

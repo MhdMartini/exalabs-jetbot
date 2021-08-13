@@ -1,5 +1,8 @@
 <launch>
 
+<include file="$(find camera)/launch/camera.launch"/>
+<include file="$(find color_mask)/launch/yellow_mask.launch"/>
+
   <group ns="jetbot">
 
       <node pkg="object_slope" name="lane_slope_node" type="object_slope.py">
