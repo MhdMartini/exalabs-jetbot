@@ -2,6 +2,7 @@
 
 <include file="$(find camera)/launch/camera.launch"/>
 <include file="$(find color_mask)/launch/red_mask.launch"/>
+<include file="$(find object_centroid)/launch/red_centroid.launch"/>
 
 
   <group ns="jetbot">
