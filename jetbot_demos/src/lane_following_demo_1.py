@@ -50,8 +50,8 @@ class LaneFollowingDemo1:
         self.main()
 
     def get_v(self):
-        v_min = rospy.get_param(PARAM_MIN_VEL, PARAM_MIN_VEL_DEF)
         v_max = rospy.get_param(PARAM_MAX_VEL, PARAM_MAX_VEL_DEF)
+        v_min = rospy.get_param(PARAM_MIN_VEL, PARAM_MIN_VEL_DEF)
         v_def = v_max - abs(self.omega) * (v_max - v_min)  # default velocity inversely proportional to omega
         self.v += v_def
 
