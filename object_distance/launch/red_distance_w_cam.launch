@@ -1,6 +1,8 @@
 <launch>
 
 <include file="$(find camera)/launch/camera.launch"/>
+<include file="$(find color_mask)/launch/red_mask.launch"/>
+
 
   <group ns="jetbot">
       <node pkg="object_distance" name="red_distance_node" type="object_distance.py">
