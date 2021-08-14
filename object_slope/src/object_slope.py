@@ -43,9 +43,9 @@ class ObjectSlope:
         return opp, adj
 
     def find_angle(self, opposite, adjacent):
-        try:
+        if adjacent != 0:
             rad = np.arctan(opposite / adjacent)
-        except:
+        else:
             rad = np.pi / 2
         return rad
 
