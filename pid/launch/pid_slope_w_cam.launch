@@ -1,0 +1,31 @@
+<launch>
+
+<include file="$(find camera)/launch/camera.launch"/>
+<include file="$(find color_mask)/launch/yellow_mask.launch"/>
+<include file="$(find object_slope)/launch/lane_slope.launch"/>
+
+  <group ns="jetbot">
+
+      <node pkg="pid" name="pid_errors_slope_node" type="pid_errors.py">
+          <param name="SMART_ERROR" value="1"/>
+          <param name="LIMIT" value="0.3"/>
+          <param name="DESIRED" value="0"/>
+
+          <remap from="in_topic" to="lane_slope"/>
+          <remap from="out_topic" to="pid_errors_slope"/>
+      </node>
+
+      <node pkg="pid" name="pid_control_slope_node" type="pid_control.py">
+          <rosparam>
+              PID/P: 0.01
+              PID/I: 0.
+              PID/D: 0.
+          </rosparam>
+
+          <remap from="in_topic" to="pid_errors_slope"/>
+          <remap from="out_topic" to="pid_control_slope"/>
+      </node>
+
+  </group>
+
+</launch>
