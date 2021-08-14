@@ -86,6 +86,7 @@ if __name__ == '__main__':
 
     # v controller
     IN_TOPIC_DIST = "pid_control_distance"
+
     OUT_TOPIC = "motor_speed"
 
     PARAM_MAX_VEL = os.path.join(rospy.get_name(), "MAX_VELOCITY")
