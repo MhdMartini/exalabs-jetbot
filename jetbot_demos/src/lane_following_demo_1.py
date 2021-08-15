@@ -37,9 +37,9 @@ class LaneFollowingDemo1:
             self.main()
 
     def get_v(self, omega):
-        if abs(omega) <= 0.05:
-            return PARAM_MAX_VEL_DEF
-        return PARAM_MIN_VEL_DEF
+        if abs(omega) <= rospy.get_param(PARAM_SHARP_TURN, PARAM_SHARP_TURN_DEF):
+            return rospy.get_param(PARAM_MAX_VEL, PARAM_MAX_VEL_DEF)
+        return rospy.get_param(PARAM_MIN_VEL, PARAM_MIN_VEL_DEF)
 
     def clear_all(self):
         self.omega = 0
@@ -70,13 +70,13 @@ if __name__ == '__main__':
     OUT_TOPIC = "motor_speed"
 
     PARAM_MAX_VEL = os.path.join(rospy.get_name(), "MAX_VELOCITY")
-    PARAM_MAX_VEL_DEF = 0.32
+    PARAM_MAX_VEL_DEF = 0.28
 
     PARAM_MIN_VEL = os.path.join(rospy.get_name(), "MIN_VELOCITY")
     PARAM_MIN_VEL_DEF = 0.25
 
-    # PARAM_SHARP_TURN = os.path.join(rospy.get_name(), "SHARP_TURN")
-    # PARAM_SHARP_TURN_DEF = 0.1
+    PARAM_SHARP_TURN = os.path.join(rospy.get_name(), "SHARP_TURN")
+    PARAM_SHARP_TURN_DEF = 0.05
 
     PARAM_CTRL_READY = os.path.join(rospy.get_name(), "CONTROLLER_READY")
     PARAM_CTRL_READY_DEF = 0
