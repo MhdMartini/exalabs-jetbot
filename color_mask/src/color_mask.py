@@ -42,7 +42,7 @@ class ColorMask:
         msg.step = len(msg.data) // msg.height
         self.pub.publish(msg)
 
-    def filter_mask(mask):
+    def filter_mask(self, mask):
         erode = cv2.erode(mask, KERNEL)
         return cv2.dilate(erode, KERNEL)
 
