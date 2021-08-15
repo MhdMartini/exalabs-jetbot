@@ -15,77 +15,32 @@ import os
 
 class LaneFollowingDemo1:
     def __init__(self):
-        rospy.Subscriber(IN_TOPIC_ANG, Float32, self.ang, queue_size=1)
-        rospy.Subscriber(IN_TOPIC_SLOPE, Float32, self.slope, queue_size=1)
-        rospy.Subscriber(IN_TOPIC_DIST, Float32, self.distance, queue_size=1)
+        rospy.Subscriber(IN_TOPIC_ANG, Float32, self.main, queue_size=1)
 
         self.pub = rospy.Publisher(OUT_TOPIC, MotorSpeed, queue_size=1)
 
-        self.dist_received = False
-        self.v = 0
+    def get_v(self, omega):
+        if abs(omega) <= 0.1:
+            return PARAM_MAX_VEL_DEF
+        return PARAM_MIN_VEL_DEF
 
-        self.ang_received = False
-        self.slope_received = False
-        self.omega = 0
-
-    def ang(self, msg):
-        if self.ang_received:
-            return
-        self.ang_received = True
-        self.omega += msg.data
-        self.main()
-
-    def slope(self, msg):
-        if self.slope_received:
-            return
-        self.slope_received = True
-        self.omega += msg.data
-        self.main()
-
-    def distance(self, msg):
-        if self.dist_received:
-            return
-        self.dist_received = True
-        self.v += msg.data if msg.data < 0 else 0  # ignore positive errors
-        self.main()
-
-    def get_v(self):
-        v_max = rospy.get_param(PARAM_MAX_VEL, PARAM_MAX_VEL_DEF)
-        v_min = rospy.get_param(PARAM_MIN_VEL, PARAM_MIN_VEL_DEF)
-        v_def = v_max - abs(self.omega) * (v_max - v_min)  # default velocity inversely proportional to omega
-        self.v += v_def
-
-    def publish(self):
+    def publish(self, v, omega):
         msg = MotorSpeed()
-        msg.v = self.v
-        msg.omega = self.omega
+        msg.v = v
+        msg.omega = omega
         self.pub.publish(msg)
 
-    def clear_all(self):
-        self.dist_received = False
-        self.v = 0
-
-        self.ang_received = False
-        self.slope_received = False
-        self.omega = 0
-
-    def main(self):
-        if self.ang_received and self.slope_received and self.dist_received:
-            self.get_v()
-            self.publish()
-            self.clear_all()
+    def main(self, msg):
+        omega = msg.data
+        v = self.get_v(omega)
+        self.publish(v, omega)
 
 
 if __name__ == '__main__':
     NODE_NAME = "lane_following_demo_1_node"
     rospy.init_node(NODE_NAME)
 
-    # omega controllers
     IN_TOPIC_ANG = "pid_control_angle"
-    IN_TOPIC_SLOPE = "pid_control_slope"
-
-    # v controller
-    IN_TOPIC_DIST = "pid_control_distance"
 
     OUT_TOPIC = "motor_speed"
 
