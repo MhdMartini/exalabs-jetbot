@@ -6,6 +6,10 @@
 <include file="$(find object_angle)/launch/yellow_angle.launch"/>
 <include file="$(find pid)/launch/pid_angle.launch"/>
 
+<include file="$(find object_slope)/launch/lane_slope.launch"/>
+<include file="$(find pid)/launch/pid_slope.launch"/>
+
+
 <include file="$(find motor_speed)/launch/motor_speed.launch"/>
 
   <group ns="jetbot">

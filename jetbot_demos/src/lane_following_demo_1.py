@@ -16,6 +16,7 @@ import os
 class LaneFollowingDemo1:
     def __init__(self):
         rospy.Subscriber(IN_TOPIC_ANG, Float32, self.main, queue_size=1)
+        rospy.Subscriber(IN_TOPIC_SLOPE, Float32, self.main, queue_size=1)
 
         self.pub = rospy.Publisher(OUT_TOPIC, MotorSpeed, queue_size=1)
 
@@ -41,6 +42,7 @@ if __name__ == '__main__':
     rospy.init_node(NODE_NAME)
 
     IN_TOPIC_ANG = "pid_control_angle"
+    IN_TOPIC_SLOPE = "pid_control_slope"
 
     OUT_TOPIC = "motor_speed"
 
