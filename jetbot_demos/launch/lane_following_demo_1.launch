@@ -9,13 +9,18 @@
 <include file="$(find object_slope)/launch/lane_slope.launch"/>
 <include file="$(find pid)/launch/pid_slope.launch"/>
 
+<include file="$(find color_mask)/launch/red_mask.launch"/>
+<include file="$(find object_centroid)/launch/red_centroid.launch"/>
+<include file="$(find object_distance)/launch/red_distance.launch"/>
+<include file="$(find pid)/launch/pid_distance.launch"/>
+
 
 <include file="$(find motor_speed)/launch/motor_speed.launch"/>
 
   <group ns="jetbot">
       <node pkg="jetbot_demos" name="lane_following_demo_1_node" type="lane_following_demo_1.py">
-          <param name="MAX_VELOCITY" value="0.28"/>
-          <param name="MIN_VELOCITY" value="0.25"/>
+          <param name="MAX_VELOCITY" value="0.26"/>
+          <param name="MIN_VELOCITY" value="0.26"/>
           <param name="CONTROLLER_READY" value="0"/>
           <param name="SHARP_TURN" value="0.01"/>
       </node>

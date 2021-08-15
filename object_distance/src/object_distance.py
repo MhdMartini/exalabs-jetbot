@@ -40,7 +40,6 @@ class ObjectDistance:
     def main(self, msg):
         centroid = msg.x, msg.y
         distance = self.calc_distance(centroid[0], centroid[1]) if centroid != CENTROID_DEF else DIST_DEF
-        rospy.logwarn(distance)
         self.publish(distance)
 
 
