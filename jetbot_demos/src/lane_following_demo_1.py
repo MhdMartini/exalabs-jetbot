@@ -15,15 +15,36 @@ import os
 
 class LaneFollowingDemo1:
     def __init__(self):
-        rospy.Subscriber(IN_TOPIC_ANG, Float32, self.main, queue_size=1)
-        rospy.Subscriber(IN_TOPIC_SLOPE, Float32, self.main, queue_size=1)
+        rospy.Subscriber(IN_TOPIC_ANG, Float32, self.ang, queue_size=1)
+        rospy.Subscriber(IN_TOPIC_SLOPE, Float32, self.slope, queue_size=1)
 
         self.pub = rospy.Publisher(OUT_TOPIC, MotorSpeed, queue_size=1)
+
+        self.ang_received = False
+        self.slope_received = False
+        self.omega = 0
+
+    def ang(self, msg):
+        if not self.ang_received:
+            self.ang_received = True
+            self.omega += msg.data
+            self.main()
+
+    def slope(self, msg):
+        if not self.slope_received:
+            self.slope_received = True
+            self.omega += msg.data
+            self.main()
 
     def get_v(self, omega):
         if abs(omega) <= 0.05:
             return PARAM_MAX_VEL_DEF
         return PARAM_MIN_VEL_DEF
+
+    def clear_all(self):
+        self.omega = 0
+        self.ang_received = False
+        self.slope_received = False
 
     def publish(self, v, omega):
         msg = MotorSpeed()
@@ -31,10 +52,12 @@ class LaneFollowingDemo1:
         msg.omega = omega
         self.pub.publish(msg)
 
-    def main(self, msg):
-        omega = msg.data
-        v = self.get_v(omega)
-        self.publish(v, omega)
+    def main(self):
+        if self.ang_received and self.slope_received:
+            omega = self.omega
+            v = self.get_v(omega)
+            self.publish(v, omega)
+            self.clear_all()
 
 
 if __name__ == '__main__':
