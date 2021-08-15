@@ -74,6 +74,7 @@ if __name__ == '__main__':
 
     IN_TOPIC_ANG = "pid_control_angle"
     IN_TOPIC_SLOPE = "pid_control_slope"
+    IN_TOPIC_DIST = "pid_control_distance"
 
     OUT_TOPIC = "motor_speed"
 
