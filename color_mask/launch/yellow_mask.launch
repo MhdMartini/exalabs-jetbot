@@ -4,7 +4,7 @@
 
       <!-- remap the color_mask_node -->
       <node pkg="color_mask" name="yellow_mask_node" type="color_mask.py">
-
+          <param name="NOISE_CANCEL" value="1"/>
           <rosparam>
               HSV/LOWER: [1, 110, 150]
               HSV/UPPER: [120, 255, 255]

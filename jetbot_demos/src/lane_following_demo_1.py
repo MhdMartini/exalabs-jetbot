@@ -46,8 +46,10 @@ class LaneFollowingDemo1:
 
     def get_v(self, omega):
         if abs(omega) <= rospy.get_param(PARAM_SHARP_TURN, PARAM_SHARP_TURN_DEF):
-            return rospy.get_param(PARAM_MAX_VEL, PARAM_MAX_VEL_DEF) + self.slow_down
-        return rospy.get_param(PARAM_MIN_VEL, PARAM_MIN_VEL_DEF) + self.slow_down
+            v = rospy.get_param(PARAM_MAX_VEL, PARAM_MAX_VEL_DEF) + self.slow_down
+        else:
+            v = rospy.get_param(PARAM_MIN_VEL, PARAM_MIN_VEL_DEF) + self.slow_down
+        return max(v, 0)
 
     def clear_all(self):
         self.omega = 0

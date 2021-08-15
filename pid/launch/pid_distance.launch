@@ -12,7 +12,7 @@
 
       <node pkg="pid" name="pid_control_distance_node" type="pid_control.py">
           <rosparam>
-              PID/P: 0.2
+              PID/P: 0.4
               PID/I: 0
               PID/D: 0
           </rosparam>

@@ -24,13 +24,8 @@ import os
 
 class ColorMask:
     def __init__(self):
-        rospy.Subscriber(IN_TOPIC, Image, self.color_filter, queue_size=1)
+        rospy.Subscriber(IN_TOPIC, Image, self.main, queue_size=1)
         self.pub = rospy.Publisher(OUT_TOPIC, Image, queue_size=1)
-
-    def color_filter(self, msg):
-        image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative
-        mask = self.threshold_color(image)  # hsv filter -> mask
-        self.publish(mask)
 
     def threshold_color(self, image):
         image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -47,6 +42,18 @@ class ColorMask:
         msg.step = len(msg.data) // msg.height
         self.pub.publish(msg)
 
+    def filter_mask(mask):
+        erode = cv2.erode(mask, KERNEL)
+        return cv2.dilate(erode, KERNEL)
+
+    def main(self, msg):
+        image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative
+        mask = self.threshold_color(image)  # hsv filter -> mask
+
+        if rospy.get_param(PARAM_NOISE_CANCEL, PARAM_NOISE_CANCEL_DEF) != 0:
+            mask = self.filter_mask(mask)
+        self.publish(mask)
+
 
 if __name__ == "__main__":
     NODE_NAME = "color_mask_node"
@@ -61,6 +68,11 @@ if __name__ == "__main__":
         "LOWER": (1, 110, 150),
         "UPPER": (120, 255, 255)
     }
+
+    PARAM_NOISE_CANCEL = os.path.join(rospy.get_name(), "NOISE_CANCEL")
+    PARAM_NOISE_CANCEL_DEF = 0
+
+    KERNEL = np.ones((4, 4), np.uint8)
 
     ColorMask()
     rospy.spin()
