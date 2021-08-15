@@ -3,8 +3,6 @@
   <group ns="jetbot">
 
       <node pkg="pid" name="pid_errors_distance_node" type="pid_errors.py">
-          <param name="SMART_ERROR" value="1"/>
-          <param name="LIMIT" value="0.1"/>
           <param name="DESIRED" value="0.4"/>
           <remap from="in_topic" to="red_distance"/>
           <remap from="out_topic" to="pid_errors_distance"/>

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Node to receive an object's normalized centroid and publish the distance to that object.
-If no centroid is found, distance is 0
+If no centroid is found, distance is 1
 
 Example use:
     Subscribes to: red_centroid
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     IN_TOPIC = "in_topic"
     OUT_TOPIC = "out_topic"
     CENTROID_DEF = (-1, -1)  # centroid received if no object is detected
-    DIST_DEF = 0
+    DIST_DEF = 1
 
     ObjectDistance()
     rospy.spin()
