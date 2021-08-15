@@ -13,7 +13,7 @@
 
       <node pkg="pid" name="pid_control_slope_node" type="pid_control.py">
           <rosparam>
-              PID/P: 0.01
+              PID/P: 0.006
               PID/I: 0.
               PID/D: 0.
           </rosparam>
