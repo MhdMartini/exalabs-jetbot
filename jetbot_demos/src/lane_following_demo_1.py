@@ -20,7 +20,7 @@ class LaneFollowingDemo1:
         self.pub = rospy.Publisher(OUT_TOPIC, MotorSpeed, queue_size=1)
 
     def get_v(self, omega):
-        if abs(omega) <= 0.1:
+        if abs(omega) <= 0.05:
             return PARAM_MAX_VEL_DEF
         return PARAM_MIN_VEL_DEF
 

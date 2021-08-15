@@ -1,10 +1,22 @@
 <launch>
 
+<!-- launch camera, find lane slope and PID it -->
 <include file="$(find camera)/launch/camera.launch"/>
 <include file="$(find color_mask)/launch/yellow_mask.launch"/>
+<include file="$(find object_slope)/launch/lane_slope.launch"/>
+<include file="$(find pid)/launch/pid_slope.launch"/>
+
+<!-- find lane x distance and PID it -->
 <include file="$(find object_centroid)/launch/yellow_centroid.launch"/>
 <include file="$(find object_angle)/launch/yellow_angle.launch"/>
 <include file="$(find pid)/launch/pid_angle.launch"/>
+
+<!-- find vehicle y distance and PID it -->
+<include file="$(find color_mask)/launch/red_mask.launch"/>
+<include file="$(find object_centroid)/launch/red_centroid.launch"/>
+<include file="$(find object_distance)/launch/red_distance.launch"/>
+<include file="$(find pid)/launch/pid_distance.launch"/>
+
 
 <include file="$(find motor_speed)/launch/motor_speed.launch"/>
 
