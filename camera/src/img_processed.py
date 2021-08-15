@@ -39,9 +39,9 @@ class ImgProcess:
         msg.step = len(msg.data) // msg.height
         publisher.publish(msg)
 
-    def crop(self, im, width, height):
+    def crop(self, im):
         offset = rospy.get_param(PARAM_OFFSET, PARAM_OFFSET_DEF)
-        return im[height // 2 - offset:, :]
+        return im[im.shape[0] // 2 - offset:, :]
 
     def main(self, msg):
         im = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative
@@ -50,7 +50,7 @@ class ImgProcess:
         im_smooth = cv2.GaussianBlur(im, (5, 5), 0)
         self.publish(im_smooth, self.pub1)
 
-        cropped = self.crop(im_smooth, msg.width, msg.height)
+        cropped = self.crop(im_smooth)
         self.publish(cropped, self.pub2)
 
 
