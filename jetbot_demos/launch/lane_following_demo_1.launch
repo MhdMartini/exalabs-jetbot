@@ -14,10 +14,10 @@
 
   <group ns="jetbot">
       <node pkg="jetbot_demos" name="lane_following_demo_1_node" type="lane_following_demo_1.py">
-          <param name="MAX_VELOCITY" value="0.32"/>
+          <param name="MAX_VELOCITY" value="0.28"/>
           <param name="MIN_VELOCITY" value="0.25"/>
           <param name="CONTROLLER_READY" value="0"/>
-          param name="SHARP_TURN" value="0.01"/>
+          <param name="SHARP_TURN" value="0.01"/>
       </node>
   </group>
 
