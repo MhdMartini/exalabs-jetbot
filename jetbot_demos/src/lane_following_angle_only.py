@@ -52,7 +52,7 @@ if __name__ == '__main__':
     NODE_NAME = "lane_following_angle_only_node"
     rospy.init_node(NODE_NAME)
 
-    IN_TOPIC = "pid_control_angle"
+    IN_TOPIC = "pid_control_slope"
     OUT_TOPIC = "motor_speed"
 
     PARAM_MAX_VEL = os.path.join(rospy.get_name(), "MAX_VELOCITY")
