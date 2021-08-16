@@ -9,8 +9,8 @@
 <include file="$(find motor_speed)/launch/motor_speed.launch"/>
 
   <group ns="jetbot">
-      <node pkg="jetbot_demos" name="lane_following_angle_only_node" type="lane_following_angle_only.py">
-          <param name="MAX_VELOCITY" value="0.26"/>
+      <node pkg="jetbot_demos" name="lane_following_demo_0_node" type="lane_following_demo_0.py">
+          <param name="MAX_VELOCITY" value="0.28"/>
           <param name="MIN_VELOCITY" value="0.26"/>
           <param name="SHARP_TURN" value="0.1"/>
           <param name="CONTROLLER_READY" value="0"/>
