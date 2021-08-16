@@ -7,7 +7,7 @@
           <param name="LIMIT" value="0.5"/>
           <param name="DESIRED" value="0"/>
 
-          <remap from="in_topic" to="lane_slope"/>
+          <remap from="in_topic" to="yellow_slope"/>
           <remap from="out_topic" to="pid_errors_slope"/>
       </node>
 
