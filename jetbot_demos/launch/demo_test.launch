@@ -1,0 +1,20 @@
+<launch>
+
+<include file="$(find camera)/launch/camera.launch"/>
+<include file="$(find color_mask)/launch/yellow_mask.launch"/>
+<include file="$(find object_centroid)/launch/yellow_centroid.launch"/>
+<include file="$(find object_slope)/launch/yellow_slope.launch"/>
+<include file="$(find pid)/launch/pid_slope.launch"/>
+
+<include file="$(find motor_speed)/launch/motor_speed.launch"/>
+
+  <group ns="jetbot">
+      <node pkg="jetbot_demos" name="lane_following_angle_only_node" type="lane_following_angle_only.py">
+          <param name="MAX_VELOCITY" value="0.26"/>
+          <param name="MIN_VELOCITY" value="0.26"/>
+          <param name="SHARP_TURN" value="0.1"/>
+          <param name="CONTROLLER_READY" value="0"/>
+      </node>
+  </group>
+
+</launch>

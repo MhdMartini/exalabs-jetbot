@@ -23,6 +23,7 @@ import cv2
 import numpy as np
 from sensor_msgs.msg import Image
 from jetbot_msgs.msg import Vector2D
+import os
 
 
 class ObjectCentroid:
@@ -55,8 +56,9 @@ class ObjectCentroid:
         if centroid is None:
             self.publish(CENTROID_DEF)
             return
-        centroid_norm = self.normalize(msg.height, msg.width, centroid)
-        self.publish(centroid_norm)
+        if rospy.get_param(PARAM_NORM, PARAM_NORM_DEF):
+            centroid = self.normalize(msg.height, msg.width, centroid)
+        self.publish(centroid)
 
 
 if __name__ == "__main__":
@@ -67,6 +69,9 @@ if __name__ == "__main__":
     IN_TOPIC = "in_topic"
     OUT_TOPIC = "out_topic"
     CENTROID_DEF = (-1, -1)
+
+    PARAM_NORM = os.path.join(rospy.get_name(), "NORMALIZE")
+    PARAM_NORM_DEF = 0
 
     ObjectCentroid()
     rospy.spin()
