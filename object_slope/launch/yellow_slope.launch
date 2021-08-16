@@ -3,7 +3,7 @@
   <group ns="jetbot">
 
       <node pkg="object_slope" name="yellow_slope_node" type="object_slope.py">
-          <remap from="in_topic" to="yellow_mask"/>
+          <remap from="in_topic" to="yellow_centroid"/>
           <remap from="out_topic" to="yellow_slope"/>
       </node>
 
