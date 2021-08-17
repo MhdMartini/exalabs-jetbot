@@ -2,13 +2,15 @@
 """
 Node to detect aruco tags and publish
 
-Subscribes to: camera/processed/cropped
-msg info:
-    sensor_msgs/Image
+Example use:
+    Subscribes to: camera/processed
+        msg info:
+            sensor_msgs/Image
 
-Published to: camera/yellow_mask
-msg info:
-    sensor_msgs/Image
+    Published to: aruco_detector
+        msg info:
+            jetbot_msgs/ArucoTags :-> list of ArucoTag objects
+
 
 
 Mohamed Martini
