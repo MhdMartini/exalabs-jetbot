@@ -4,7 +4,7 @@
     <node pkg="jetbot_ros" name="camera" type="jetbot_camera"/>
     <node pkg="camera" name="img_processed_node" type="img_processed.py">
         <param name="SCALE" value="2"/>
-        <param name="OFFSET" value="40"/>
+        <param name="OFFSET" value="20"/>
     </node>
   </group>
 
