@@ -13,9 +13,9 @@
 
       <node pkg="pid" name="pid_control_slope_node" type="pid_control.py">
           <rosparam>
-              PID/P: 0.012
+              PID/P: 0.212
               PID/I: 0.
-              PID/D: 0.
+              PID/D: 0.037
           </rosparam>
 
           <remap from="in_topic" to="pid_errors_slope"/>
