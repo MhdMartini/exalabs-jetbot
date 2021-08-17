@@ -28,7 +28,7 @@ class ImgProcess:
 
     def resize(self, im, width, height):
         scale = rospy.get_param(PARAM_SCALE, PARAM_SCALE_DEF)
-        return cv2.resize(im, (width // scale, height // scale))  # resize image
+        return cv2.resize(im, (width // scale, height // scale), cv2.INTER_NEAREST)  # resize image
 
     def publish(self, img, publisher):
         msg = Image()
