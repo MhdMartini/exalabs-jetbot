@@ -55,7 +55,8 @@ add_message_files(
   Vector2D.msg
   PIDError.msg
   Vectors2D.msg
-  ArucoDetector.msg
+  ArucoTag.msg
+  ArucoTags.msg
 )
 
 ## Generate services in the 'srv' folder
