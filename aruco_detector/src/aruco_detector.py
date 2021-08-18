@@ -26,8 +26,8 @@ from jetbot_msgs.msg import Vector2D, ArucoTag, ArucoTags
 
 class _ArucoDetector:
     def __init__(self):
-        rospy.Subscriber(IN_TOPIC, Image, self.main, queu_size=1)
-        self.pub = rospy.Publisher(OUT_TOPIC, ArucoTags, queu_size=1)
+        rospy.Subscriber(IN_TOPIC, Image, self.main, queue_size=1)
+        self.pub = rospy.Publisher(OUT_TOPIC, ArucoTags, queue_size=1)
 
     def aruco_detect(self, image):
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
