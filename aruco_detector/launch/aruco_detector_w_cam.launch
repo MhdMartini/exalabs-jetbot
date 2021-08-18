@@ -1,13 +1,5 @@
 <launch>
 
 <include file="$(find camera)/launch/camera.launch"/>
+<include file="$(find aruco_detector)/launch/aruco_detector.launch"/>
 
-      <group ns="jetbot">
-
-          <node pkg="aruco_detector" name="aruco_detector_node" type="aruco_detector.py">
-              <remap from="in_topic" to="camera/processed"/>
-              <remap from="out_topic" to="aruco_tags"/>
-          </node>
-
-      </group>
-</launch>
