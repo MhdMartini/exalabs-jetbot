@@ -25,7 +25,7 @@ from std_msgs.msg import Float32
 import os
 
 
-class LaneFollowingAngleOnly:
+class LaneFollowingDemo0:
     def __init__(self):
         rospy.Subscriber(IN_TOPIC, Float32, self.main, queue_size=1)
         self.pub = rospy.Publisher(OUT_TOPIC, MotorSpeed, queue_size=1)
@@ -75,5 +75,5 @@ if __name__ == '__main__':
 
     if rospy.get_param(PARAM_CTRL_READY) == 1:
         # this is in case Ctrl+C is used while in the while loop
-        LaneFollowingAngleOnly()
+        LaneFollowingDemo0()
         rospy.spin()

@@ -15,32 +15,17 @@ import os
 
 class LaneFollowingDemo1:
     def __init__(self):
-        rospy.Subscriber(IN_TOPIC_ANG, Float32, self.ang, queue_size=1)
-        rospy.Subscriber(IN_TOPIC_SLOPE, Float32, self.slope, queue_size=1)
+        rospy.Subscriber(IN_TOPIC_SLOPE, Float32, self.main, queue_size=1)
         rospy.Subscriber(IN_TOPIC_DIST, Float32, self.distance, queue_size=1)
 
         self.pub = rospy.Publisher(OUT_TOPIC, MotorSpeed, queue_size=1)
 
-        self.ang_received = False
-        self.slope_received = False
         self.omega = 0
         self.slow_down = 0
 
-    def ang(self, msg):
-        if not self.ang_received:
-            self.ang_received = True
-            self.omega += msg.data
-            self.main()
-
-    def slope(self, msg):
-        if not self.slope_received:
-            self.slope_received = True
-            self.omega += msg.data
-            self.main()
-
     def distance(self, msg):
         if msg.data < 0:
-            self.slow_down += msg.data
+            self.slow_down = msg.data
         else:
             self.slow_down = 0
 
@@ -51,30 +36,22 @@ class LaneFollowingDemo1:
             v = rospy.get_param(PARAM_MIN_VEL, PARAM_MIN_VEL_DEF) + self.slow_down
         return max(v, 0)
 
-    def clear_all(self):
-        self.omega = 0
-        self.ang_received = False
-        self.slope_received = False
-
     def publish(self, v, omega):
         msg = MotorSpeed()
         msg.v = v
         msg.omega = omega
         self.pub.publish(msg)
 
-    def main(self):
-        if self.ang_received and self.slope_received:
-            omega = self.omega
-            v = self.get_v(omega)
-            self.publish(v, omega)
-            self.clear_all()
+    def main(self, msg):
+        omega = msg.data
+        v = self.get_v(omega)
+        self.publish(v, omega)
 
 
 if __name__ == '__main__':
     NODE_NAME = "lane_following_demo_1_node"
     rospy.init_node(NODE_NAME)
 
-    IN_TOPIC_ANG = "pid_control_angle"
     IN_TOPIC_SLOPE = "pid_control_slope"
     IN_TOPIC_DIST = "pid_control_distance"
 
