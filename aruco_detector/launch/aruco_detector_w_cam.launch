@@ -1,0 +1,6 @@
+<launch>
+
+<include file="$(find camera)/launch/camera.launch"/>
+<include file="$(find aruco_detector)/launch/aruco_detector.launch"/>
+
+</launch>
