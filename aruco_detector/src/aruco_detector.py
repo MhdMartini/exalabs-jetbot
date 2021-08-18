@@ -36,41 +36,61 @@ class _ArucoDetector:
         corners, ids, _ = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
         return corners, ids
 
-    def publish(self, corners, ids):
-        tags = ArucoTags()
+    def get_tags(self, corners, ids, height, width):
+        tags = []
         for corner, _id in zip(corners, ids):
             tag = ArucoTag()
-            tag.id = _id
+            tag.id = _id[0]
             corner = corner[0]
             top_left, top_right, bottom_right, bottom_left = corner
 
             tl = Vector2D()
             tl.x, tl.y = top_left
+            tl.x /= width
+            tl.y /= height
             tag.top_left = tl
 
             tr = Vector2D()
             tr.x, tr.y = top_right
+            tr.x /= width
+            tr.y /= height
             tag.top_right = tr
 
             br = Vector2D()
             br.x, br.y = bottom_right
+            br.x /= width
+            br.y /= height
             tag.bottom_right = br
 
             bl = Vector2D()
             bl.x, bl.y = bottom_left
+            bl.x /= width
+            bl.y /= height
             tag.bottom_left = bl
 
             tags.append(tag)
+        return tags
 
-        self.pub.publish(tags)
+    def tags_to_msg(self, tags):
+        tags_msg = ArucoTags()
+        tags_msg.tags = tags
+        return tags_msg
+
+    def publish(self, tags_msg):
+        self.pub.publish(tags_msg)
 
     def main(self, msg):
         """
         get input image, get ids and corners of detected aruco tags and publish them
         """
-        image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative
+        height, width = msg.height, msg.width
+        image = np.frombuffer(msg.data, dtype=np.uint8).reshape(height, width, -1)  # cv_bridge alternative
         corners, ids = self.aruco_detect(image)
-        self.publish(corners, ids)
+        if ids is None:
+            return
+        tags = self.get_tags(corners, ids, height, width)
+        tags_msg = self.tags_to_msg(tags)
+        self.publish(tags_msg)
 
 
 if __name__ == '__main__':
