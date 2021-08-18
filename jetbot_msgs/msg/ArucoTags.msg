@@ -1,1 +1,1 @@
-jetbot_msgs/ArucoTag[]
+jetbot_msgs/ArucoTag[] tags
