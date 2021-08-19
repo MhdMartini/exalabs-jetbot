@@ -3,14 +3,14 @@
   <group ns="jetbot">
 
       <node pkg="pid" name="pid_errors_distance_node" type="pid_errors.py">
-          <param name="DESIRED" value="0.6"/>
+          <param name="DESIRED" value="0.8"/>
           <remap from="in_topic" to="aruco_distance"/>
           <remap from="out_topic" to="pid_errors_distance"/>
       </node>
 
       <node pkg="pid" name="pid_control_distance_node" type="pid_control.py">
           <rosparam>
-              PID/P: 0.4
+              PID/P: 1
               PID/I: 0
               PID/D: 0
           </rosparam>
