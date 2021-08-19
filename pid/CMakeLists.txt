@@ -15,7 +15,6 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   std_msgs
-  yellow_lane_angle
 )
 
 ## System dependencies are found with CMake's conventions
