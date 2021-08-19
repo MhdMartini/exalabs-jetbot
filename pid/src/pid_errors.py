@@ -53,7 +53,7 @@ class PIDErrors:
 
 class PIDErrorsSmart(PIDErrors):
     def get_error(self, error):
-        if error == 0:
+        if error == rospy.get_param(PARAM_DEF_ERROR, PARAM_DEF_ERROR_DEF):
             # check if it is really zero
             if abs(self.past_error) >= rospy.get_param(PARAM_LIMIT, PARAM_LIMIT_DEF):
                 return self.past_error
@@ -78,6 +78,9 @@ if __name__ == "__main__":
 
     PARAM_SMART_ERROR = os.path.join(rospy.get_name(), "SMART_ERROR")
     PARAM_SMART_ERROR_DEF = 0
+
+    PARAM_DEF_ERROR = os.path.join(rospy.get_name(), "DEFAULT_ERROR")
+    PARAM_DEF_ERROR_DEF = 0
 
     SMART = rospy.get_param(PARAM_SMART_ERROR, PARAM_SMART_ERROR_DEF)
     if SMART:
