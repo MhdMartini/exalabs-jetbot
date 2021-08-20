@@ -38,6 +38,8 @@ class _ArucoDetector:
 
     def get_tags(self, corners, ids, height, width):
         tags = []
+        if ids is None:
+            return tags
         for corner, _id in zip(corners, ids):
             tag = ArucoTag()
             tag.id = _id[0]
@@ -86,8 +88,6 @@ class _ArucoDetector:
         height, width = msg.height, msg.width
         image = np.frombuffer(msg.data, dtype=np.uint8).reshape(height, width, -1)  # cv_bridge alternative
         corners, ids = self.aruco_detect(image)
-        if ids is None:
-            return
         tags = self.get_tags(corners, ids, height, width)
         tags_msg = self.tags_to_msg(tags)
         self.publish(tags_msg)

@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     IN_TOPIC = "in_topic"
     OUT_TOPIC = "out_topic"
-    CENTROID_DEF = (-1, -1)  # centroid received if no object is detected
+    CENTROID_DEF = -1, -1  # centroid received if no object is detected
     DIST_DEF = 1
 
     ObjectDistance()

@@ -2,17 +2,18 @@
 """
 Node to filter out and publish a thresholded yellow lane image
 
-Subscribes to: camera/processed/cropped
-msg info:
-    sensor_msgs/Image
+Example use:
+    Subscribes to: camera/processed/cropped
+    msg info:
+        sensor_msgs/Image
 
-Published to: camera/yellow_mask
-msg info:
-    sensor_msgs/Image
+    Published to: yellow_mask
+    msg info:
+        sensor_msgs/Image
 
 
-Mohamed Martini
-University of Massachusetts Lowell
+    Mohamed Martini
+    University of Massachusetts Lowell
 """
 
 import rospy

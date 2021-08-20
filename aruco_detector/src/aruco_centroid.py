@@ -47,6 +47,8 @@ class ArucoCentroid:
         get ArucoTags object, and publish the centroid of a wanted tag
         """
         tags = msg.tags
+        if not tags:
+            self.publish(CENTROID_DEF)
         for tag in tags:
             if tag.id != rospy.get_param(PARAM_ID, PARAM_ID_DEF):
                 continue
@@ -64,6 +66,8 @@ if __name__ == '__main__':
 
     PARAM_ID = os.path.join(rospy.get_name(), "TAG_ID")
     PARAM_ID_DEF = 0
+
+    CENTROID_DEF = -1, -1  # centroid published if no tag is detected
 
     ArucoCentroid()
     rospy.spin()
