@@ -28,11 +28,11 @@ class NavigationPoint:
         rospy.Subscriber(IN_TOPIC, Image, self.main, queue_size=1)
         self.pub = rospy.Publisher(OUT_TOPIC, Vector2D, queue_size=1)
 
-    def get_nav_point(self, image):
-        for y in range(image.shape[0]):
-            for x in range(image.shape[1]):
+    def get_nav_point(self, image, height, width):
+        for y in range(height):
+            for x in range(width):
                 if image[y, x] > 0:
-                    return (x, y)
+                    return (x / width, y / height)
         return NAV_POINT_DEF
 
     def publish(self, point):
@@ -41,8 +41,9 @@ class NavigationPoint:
         self.pub.publish(msg)
 
     def main(self, msg):
-        image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative
-        nav_point = self.get_nav_point(image)
+        height, width = msg.height, msg.width
+        image = np.frombuffer(msg.data, dtype=np.uint8).reshape(height, width, -1)  # cv_bridge alternative
+        nav_point = self.get_nav_point(image, height, width)
         self.publish(nav_point)
 
 
