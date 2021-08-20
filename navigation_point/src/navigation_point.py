@@ -32,7 +32,7 @@ class NavigationPoint:
         for y in range(height):
             for x in range(width):
                 if image[y, x] > 0:
-                    return (x / width, y / height)
+                    return x / width, y / height
         return NAV_POINT_DEF
 
     def publish(self, point):

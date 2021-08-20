@@ -39,6 +39,9 @@ class ObjectSlope:
         self.pub.publish(slope)
 
     def main(self, msg):
+        centroid = msg.x, msg.y
+        if centroid == CENTROID_DEF:
+            self.publish(SLOPE_DEF)
         dx, dy = self.get_dx_dy(msg.x, msg.y)
         slope = np.arctan2(dx, dy)
         self.publish(slope)
@@ -50,6 +53,8 @@ if __name__ == "__main__":
 
     IN_TOPIC = "in_topic"
     OUT_TOPIC = "out_topic"
+
+    CENTROID_DEF = -1, -1
     SLOPE_DEF = 0
     ObjectSlope()
     rospy.spin()
