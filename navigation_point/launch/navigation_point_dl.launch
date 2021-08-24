@@ -1,0 +1,12 @@
+<launch>
+
+  <group ns="jetbot">
+
+      <node pkg="navigation_point" name="navigation_point_dl_node" type="navigation_point_dl.py">
+          <remap from="in_topic" to="yellow_mask"/>
+          <remap from="out_topic" to="yellow_centroid"/>
+      </node>
+
+  </group>
+
+</launch>

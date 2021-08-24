@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find camera)/launch/camera.launch"/>
+    <include file="$(find color_mask)/launch/yellow_mask.launch"/>
+    <include file="$(find navigation_point)/launch/navigation_point_dl.launch"/>
+</launch>
