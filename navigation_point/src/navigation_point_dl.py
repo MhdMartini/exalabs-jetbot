@@ -21,15 +21,32 @@ import rospy
 import numpy as np
 from sensor_msgs.msg import Image
 from jetbot_msgs.msg import Vector2D
-from navigation_point import NavigationPoint
+import torchvision
+import torch
 
 
-class DLPoint(NavigationPoint):
+class NavigationPoint:
     def __init__(self):
-        super(NavigationPoint, self).__init__()
+        rospy.Subscriber(IN_TOPIC, Image, self.main, queue_size=1)
+        self.pub = rospy.Publisher(OUT_TOPIC, Vector2D, queue_size=1)
 
     def get_nav_point(self, image, height, width):
+        for y in range(height):
+            for x in range(width):
+                if image[y, x] > 0:
+                    return x / width, y / height
         return NAV_POINT_DEF
+
+    def publish(self, point):
+        msg = Vector2D()
+        msg.x, msg.y = point
+        self.pub.publish(msg)
+
+    def main(self, msg):
+        height, width = msg.height, msg.width
+        image = np.frombuffer(msg.data, dtype=np.uint8).reshape(height, width, -1)  # cv_bridge alternative
+        nav_point = self.get_nav_point(image, height, width)
+        self.publish(nav_point)
 
 
 if __name__ == "__main__":
@@ -41,5 +58,8 @@ if __name__ == "__main__":
 
     NAV_POINT_DEF = -1, -1
 
-    DLPoint()
+    model = torchvision.models.resnet18(pretrained=False)
+    model.fc = torch.nn.Linear(512, 2)
+
+    NavigationPoint()
     rospy.spin()
