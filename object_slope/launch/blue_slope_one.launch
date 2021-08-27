@@ -1,0 +1,13 @@
+<launch>
+
+  <group ns="one">
+
+      <node pkg="object_slope" name="blue_slope_node" type="object_slope.py">
+          <remap from="in_topic" to="blue_centroid"/>
+          <remap from="out_topic" to="blue_slope"/>
+      </node>
+
+  </group>
+
+
+</launch>

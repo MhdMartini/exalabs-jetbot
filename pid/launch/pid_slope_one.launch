@@ -1,0 +1,27 @@
+<launch>
+
+  <group ns="one">
+
+      <node pkg="pid" name="pid_errors_slope_node" type="pid_errors.py">
+          <param name="SMART_ERROR" value="1"/>
+          <param name="LIMIT" value="0.5"/>
+          <param name="DESIRED" value="0"/>
+
+          <remap from="in_topic" to="yellow_slope"/>
+          <remap from="out_topic" to="pid_errors_slope"/>
+      </node>
+
+      <node pkg="pid" name="pid_control_slope_node" type="pid_control.py">
+          <rosparam>
+              PID/P: 0.0827
+              PID/I: 0.00036
+              PID/D: 0.0326
+          </rosparam>
+
+          <remap from="in_topic" to="pid_errors_slope"/>
+          <remap from="out_topic" to="pid_control_slope"/>
+      </node>
+
+  </group>
+
+</launch>

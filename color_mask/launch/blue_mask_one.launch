@@ -1,0 +1,20 @@
+<launch>
+
+  <group ns="one">
+
+      <!-- remap the color_mask_node -->
+      <node pkg="color_mask" name="blue_mask_node" type="color_mask.py">
+          <param name="NOISE_CANCEL" value="0"/>
+          <rosparam>
+              HSV/LOWER: [100, 105, 124]
+              HSV/UPPER: [134, 255, 189]
+          </rosparam>
+
+          <remap from="in_topic" to="camera/processed/cropped"/>
+          <remap from="out_topic" to="blue_mask"/>
+      </node>
+
+  </group>
+
+</launch>
+

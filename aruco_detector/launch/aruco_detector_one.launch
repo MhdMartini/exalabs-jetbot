@@ -1,0 +1,18 @@
+<launch>
+
+  <group ns="one">
+
+      <node pkg="aruco_detector" name="aruco_detector_node" type="aruco_detector.py">
+          <remap from="in_topic" to="camera/processed"/>
+          <remap from="out_topic" to="aruco_tags"/>
+      </node>
+
+      <node pkg="aruco_detector" name="aruco_centroid_node" type="aruco_centroid.py">
+          <remap from="in_topic" to="aruco_tags"/>
+          <remap from="out_topic" to="aruco_centroid"/>
+          <param name="TAG_ID" value="1"/>
+      </node>
+
+  </group>
+
+</launch>

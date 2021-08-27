@@ -1,0 +1,10 @@
+<launch>
+
+  <group ns="zero">
+      <node pkg="object_distance" name="aruco_distance_node" type="object_distance.py">
+          <remap from="in_topic" to="aruco_centroid"/>
+          <remap from="out_topic" to="aruco_distance"/>
+      </node>
+  </group>
+
+</launch>
