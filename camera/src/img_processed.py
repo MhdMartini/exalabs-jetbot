@@ -45,7 +45,7 @@ class ImgProcess:
 
     def main(self, msg):
         im = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)  # cv_bridge alternative
-        im = self.resize(im, msg.width, msg.height)
+        im = self.resize(np.float32(im), msg.width, msg.height)
         im = cv2.rotate(im, cv2.ROTATE_180)
         im_smooth = cv2.GaussianBlur(im, (5, 5), 0)
         self.publish(im_smooth, self.pub1)
