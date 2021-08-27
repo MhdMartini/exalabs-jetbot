@@ -1,0 +1,8 @@
+<launch>
+
+<include file="$(find camera)/launch/camera_zero.launch"/>
+
+<include file="$(find motor_speed)/launch/motor_speed_zero.launch"/>
+
+
+</launch>
