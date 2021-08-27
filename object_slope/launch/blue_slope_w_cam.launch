@@ -1,0 +1,9 @@
+<launch>
+
+<include file="$(find camera)/launch/camera.launch"/>
+<include file="$(find color_mask)/launch/blue_mask.launch"/>
+<include file="$(find object_centroid)/launch/blue_centroid.launch"/>
+<include file="$(find object_slope)/launch/blue_slope.launch"/>
+
+
+</launch>

@@ -1,9 +1,9 @@
 <launch>
 
 <include file="$(find camera)/launch/camera.launch"/>
-<include file="$(find color_mask)/launch/yellow_mask.launch"/>
-<include file="$(find object_centroid)/launch/yellow_centroid.launch"/>
-<include file="$(find object_slope)/launch/yellow_slope.launch"/>
+<include file="$(find color_mask)/launch/blue_mask.launch"/>
+<include file="$(find object_centroid)/launch/blue_centroid.launch"/>
+<include file="$(find object_slope)/launch/blue_slope.launch"/>
 <include file="$(find pid)/launch/pid_slope.launch"/>
 
 <include file="$(find aruco_detector)/launch/aruco_detector.launch"/>
