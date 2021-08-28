@@ -25,6 +25,7 @@ def gstreamer_pipeline(
     framerate=60,
     flip_method=0,
 ):
+    scale = rospy.get_param(PARAM_SCALE, PARAM_SCALE_DEF)
     return (
         "nvarguscamerasrc ! "
         "video/x-raw(memory:NVMM), "
@@ -35,12 +36,12 @@ def gstreamer_pipeline(
         "videoconvert ! "
         "video/x-raw, format=(string)BGR ! appsink"
         % (
-            capture_width,
-            capture_height,
+            capture_width // scale,
+            capture_height // scale,
             framerate,
             flip_method,
-            display_width,
-            display_height,
+            display_width // scale,
+            display_height // scale,
         )
     )
 
@@ -53,14 +54,9 @@ class Camera:
         rospy.on_shutdown(lambda: self.cap.release())
 
         self.pub_raw = rospy.Publisher(OUT_TOPIC_1, Image, queue_size=1)
-        self.pub_preprocessed = rospy.Publisher(OUT_TOPIC_2, Image, queue_size=1)
-        self.pub_cropped = rospy.Publisher(OUT_TOPIC_3, Image, queue_size=1)
+        self.pub_cropped = rospy.Publisher(OUT_TOPIC_2, Image, queue_size=1)
 
         self.stream()
-
-    def resize(self, img, width, height):
-        scale = rospy.get_param(PARAM_SCALE, PARAM_SCALE_DEF)
-        return cv2.resize(img, (width // scale, height // scale), cv2.INTER_NEAREST)  # resize image
 
     def process(self, img):
         im_resize = self.resize(img=img, width=img.shape[1], height=img.shape[0])
@@ -79,11 +75,8 @@ class Camera:
             ret_val, img = self.cap.read()
             self.pub_raw.publish(self.bridge.cv2_to_imgmsg(img, encoding="bgr8"))
 
-            # preprocessed = self.process(img)
-            # self.pub_preprocessed.publish(self.bridge.cv2_to_imgmsg(preprocessed, encoding="bgr8"))
-
-            # cropped = self.crop(preprocessed)
-            # self.pub_cropped.publish(self.bridge.cv2_to_imgmsg(cropped, encoding="bgr8"))
+            cropped = self.crop(img)
+            self.pub_cropped.publish(self.bridge.cv2_to_imgmsg(cropped, encoding="bgr8"))
 
 
 if __name__ == "__main__":
@@ -91,8 +84,7 @@ if __name__ == "__main__":
     rospy.init_node(NODE_NAME)
 
     OUT_TOPIC_1 = "out_topic_raw"
-    OUT_TOPIC_2 = "out_topic_preprocessed"
-    OUT_TOPIC_3 = "out_topic_cropped"
+    OUT_TOPIC_2 = "out_topic_cropped"
 
     PARAM_SCALE = os.path.join(rospy.get_name(), "SCALE")
     PARAM_SCALE_DEF = 4
