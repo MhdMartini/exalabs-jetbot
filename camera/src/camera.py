@@ -10,6 +10,7 @@
 import cv2
 import rospy
 from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
 # gstreamer_pipeline returns a GStreamer pipeline for capturing from the CSI camera
 # Defaults to 1280x720 @ 60fps
 # Flip the image by setting the flip_method (most common values: 0 and 2)
@@ -51,7 +52,9 @@ if __name__ == "__main__":
     OUT_TOPIC = "out_topic"
     pub = rospy.Publisher(OUT_TOPIC, Image, queue_size=1)
 
+    bridge = CvBridge()
     rate = rospy.Rate(1)
+
     rospy.logwarn(gstreamer_pipeline(flip_method=0))
     cap = cv2.VideoCapture(gstreamer_pipeline(flip_method=0), cv2.CAP_GSTREAMER)
     rospy.on_shutdown(lambda x: cap.release())
@@ -62,4 +65,4 @@ if __name__ == "__main__":
             rate.sleep()
 
         ret_val, img = cap.read()
-        pub.publish(img)
+        pub.publish(bridge.cv2_to_imgmsg(img, encoding="bgr8"))
