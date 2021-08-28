@@ -3,7 +3,7 @@
   <group ns="zero">
 
       <node pkg="aruco_detector" name="aruco_detector_node" type="aruco_detector.py">
-          <remap from="in_topic" to="camera/processed"/>
+          <remap from="in_topic" to="camera/raw"/>
           <remap from="out_topic" to="aruco_tags"/>
       </node>
 

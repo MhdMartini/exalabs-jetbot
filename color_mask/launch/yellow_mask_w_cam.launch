@@ -13,7 +13,7 @@
               HSV/UPPER: [120, 255, 255]
           </rosparam>
 
-          <remap from="in_topic" to="camera/processed/cropped"/>
+          <remap from="in_topic" to="camera/cropped"/>
           <remap from="out_topic" to="yellow_mask"/>
       </node>
 
