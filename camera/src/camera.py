@@ -79,11 +79,11 @@ class Camera:
             ret_val, img = self.cap.read()
             self.pub_raw.publish(self.bridge.cv2_to_imgmsg(img, encoding="bgr8"))
 
-            preprocessed = self.process(img)
-            self.pub_preprocessed.publish(self.bridge.cv2_to_imgmsg(preprocessed, encoding="bgr8"))
+            # preprocessed = self.process(img)
+            # self.pub_preprocessed.publish(self.bridge.cv2_to_imgmsg(preprocessed, encoding="bgr8"))
 
-            cropped = self.crop(preprocessed)
-            self.pub_cropped.publish(self.bridge.cv2_to_imgmsg(cropped, encoding="bgr8"))
+            # cropped = self.crop(preprocessed)
+            # self.pub_cropped.publish(self.bridge.cv2_to_imgmsg(cropped, encoding="bgr8"))
 
 
 if __name__ == "__main__":
