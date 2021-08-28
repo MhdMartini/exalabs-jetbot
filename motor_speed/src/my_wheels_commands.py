@@ -61,8 +61,8 @@ def shutdown():
 
 if __name__ == '__main__':
     myMotor = qwiic_scmd.QwiicScmd()
-    R_MTR = 0
-    L_MTR = 1
+    R_MTR = 1
+    L_MTR = 0
     FWD = 0
     BWD = 1
 
