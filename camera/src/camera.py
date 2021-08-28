@@ -6,7 +6,7 @@
 # Using a CSI camera (such as the Raspberry Pi Version 2) connected to a
 # NVIDIA Jetson Nano Developer Kit using OpenCV
 # Drivers for the camera and OpenCV are included in the base image
-
+import os
 import cv2
 import rospy
 from sensor_msgs.msg import Image
@@ -45,24 +45,60 @@ def gstreamer_pipeline(
     )
 
 
+class Camera:
+    def __init__(self):
+        self.bridge = CvBridge()
+        self.rate = rospy.Rate(1)
+        self.cap = cv2.VideoCapture(gstreamer_pipeline(flip_method=0), cv2.CAP_GSTREAMER)
+        rospy.on_shutdown(lambda: self.cap.release())
+
+        self.pub_raw = rospy.Publisher(OUT_TOPIC_1, Image, queue_size=1)
+        self.pub_preprocessed = rospy.Publisher(OUT_TOPIC_2, Image, queue_size=1)
+        self.pub_cropped = rospy.Publisher(OUT_TOPIC_3, Image, queue_size=1)
+
+        self.stream()
+
+    def resize(self, img, width, height):
+        scale = rospy.get_param(PARAM_SCALE, PARAM_SCALE_DEF)
+        return cv2.resize(img, (width // scale, height // scale), cv2.INTER_NEAREST)  # resize image
+
+    def process(self, img):
+        im_resize = self.resize(img=img, width=img.shape[1], height=img.shape[0])
+        im_smooth = cv2.GaussianBlur(im_resize, (5, 5), 0)
+        return im_smooth
+
+    def crop(self, img):
+        offset = rospy.get_param(PARAM_OFFSET, PARAM_OFFSET_DEF)
+        return img[img.shape[0] // 2 - offset:, :]
+
+    def stream(self):
+        while not rospy.is_shutdown():
+            if not self.cap.isOpened():
+                rospy.logwarn("Unable to open camera")
+                self.rate.sleep()
+        ret_val, img = self.cap.read()
+        self.pub_raw.publish(self.bridge.cv2_to_imgmsg(img, encoding="bgr8"))
+
+        preprocessed = self.process(img)
+        self.pub_preprocessed.publish(self.bridge.cv2_to_imgmsg(preprocessed, encoding="bgr8"))
+
+        cropped = self.crop(preprocessed)
+        self.pub_cropped.publish(self.bridge.cv2_to_imgmsg(cropped, encoding="bgr8"))
+
+
 if __name__ == "__main__":
     NODE_NAME = "camera_node"
     rospy.init_node(NODE_NAME)
 
-    OUT_TOPIC = "out_topic"
-    pub = rospy.Publisher(OUT_TOPIC, Image, queue_size=1)
+    OUT_TOPIC_1 = "out_topic_raw"
+    OUT_TOPIC_2 = "out_topic_preprocessed"
+    OUT_TOPIC_3 = "out_topic_cropped"
 
-    bridge = CvBridge()
-    rate = rospy.Rate(1)
+    PARAM_SCALE = os.path.join(rospy.get_name(), "SCALE")
+    PARAM_SCALE_DEF = 4
 
-    rospy.logwarn(gstreamer_pipeline(flip_method=0))
-    cap = cv2.VideoCapture(gstreamer_pipeline(flip_method=0), cv2.CAP_GSTREAMER)
-    rospy.on_shutdown(lambda x: cap.release())
+    PARAM_OFFSET = os.path.join(rospy.get_name(), "OFFSET")
+    PARAM_OFFSET_DEF = 40
 
-    while not rospy.is_shutdown():
-        if not cap.isOpened():
-            rospy.logwarn("Unable to open camera")
-            rate.sleep()
-
-        ret_val, img = cap.read()
-        pub.publish(bridge.cv2_to_imgmsg(img, encoding="bgr8"))
+    Camera()
+    rospy.spin()

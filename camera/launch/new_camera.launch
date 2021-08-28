@@ -1,0 +1,16 @@
+<launch>
+
+  <group ns="jetbot">
+    <node pkg="camera" name="camera_node" type="camera.py">
+      <remap from="out_topic_raw" to="camera/raw"/>
+      <remap from="out_topic_preprocessed" to="camera/processed"/>
+      <remap from="out_topic_cropped" to="camera/processed/cropped"/>
+    </node>
+
+    <node pkg="camera" name="img_processed_node" type="img_processed.py">
+        <param name="SCALE" value="4"/>
+        <param name="OFFSET" value="35"/>
+    </node>
+  </group>
+
+</launch>
