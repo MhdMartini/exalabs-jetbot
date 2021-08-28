@@ -1,53 +1,82 @@
-#!/usr/bin/env python3
-"""
-Node to control the individual wheels of the Jetbot.
-
-Subscribes to: wheels_commands
-msg info:
-    WheelsCommands
-        left    Float32
-        right   Float32
-
-Publishes to: None
-
-Mohamed Martini
-University of Massachusetts Lowell
-"""
+#!/usr/bin/env python
+import sys
+import qwiic_scmd
 import rospy
 from jetbot_msgs.msg import WheelsCommands
-from jetbot import Robot
-
-NODE_NAME = "wheels_commands_node"
-IN_TOPIC = "wheels_commands"
 
 
 class _WheelsCommands:
-    def __init__(self, robot=None):
-        # input option of passing an already created robot instance
-        if robot is None:
-            robot = Robot()
-        self.robot = robot
-        rospy.on_shutdown(lambda x: self.robot.stop())
+    def __init__(self):
+        self.rate = rospy.Rate(4)
+        if myMotor.connected is False:
+            rospy.logwarn("Motor Driver not connected. Check connections.")
+            return
+        self.init_motor()
+        self.set_motors(left=0, right=0)
+        myMotor.enable()
+        rospy.logwarn("Motor Enabled")
+        self.rate.sleep()
 
-        rospy.Subscriber(IN_TOPIC, WheelsCommands, self.command_wheels, queue_size=1)
+        rospy.Subscriber(IN_TOPIC, WheelsCommands, self.main, queue_size=10)
 
-    def command_wheels(self, msg):
-        # receive WheelsCommands msg and send commands to individual
-        # ignore invalid commands
-        left, right = msg.left, msg.right
+    def init_motor(self):
+        myMotor.begin()
+        rospy.logwarn("Motor initialized")
+        self.rate.sleep()
+
+    def get_dir_val(self, speed):
+        # receives speeds from -1 to 1, converts them to direction and value from 0 to 255
+        if speed < 0:
+            return BWD, speed * -1 * 254
+        else:
+            return FWD, speed * 254
+
+    def set_motors(self, left, right):
+        direction_l, value_l = self.get_dir_val(left)
+        myMotor.set_drive(L_MTR, direction_l, value_l)
+        direction_r, value_r = self.get_dir_val(right)
+        myMotor.set_drive(R_MTR, direction_r, value_r)
+
+    def check_input(self, left, right):
         if not (-1 <= left <= 1):
-            rospy.logwarn(f"Invalid speed value {left} for left motor. Speed values should fall between -1 and 1.")
+            rospy.logwarn("Invalid speed value {} for left motor. Speed values should fall between -1 and 1.".format(left))
             left /= abs(left)
         if not (-1 <= right <= 1):
-            rospy.logwarn(f"Invalid speed value {right} for right motor. Speed values should fall between -1 and 1.")
+            rospy.logwarn("Invalid speed value {} for right motor. Speed values should fall between -1 and 1.".format(right))
             right /= abs(right)
-        self.robot.set_motors(left, right)
+        return left, right
 
-        rospy.loginfo(f"left wheel speed: {left}")
-        rospy.loginfo(f"right_wheel speed: {right}")
+    def main(self, msg):
+        left, right = msg.left, msg.right
+        left, right = self.check_input(left, right)
+        self.set_motors(left=left, right=right)
+
+
+def shutdown():
+    # Zero Motor Speeds
+    myMotor.set_drive(R_MTR, FWD, 0)
+    myMotor.set_drive(L_MTR, FWD, 0)
+    myMotor.disable()
 
 
 if __name__ == '__main__':
-    rospy.init_node(NODE_NAME, anonymous=True)
-    _WheelsCommands()
-    rospy.spin()
+    myMotor = qwiic_scmd.QwiicScmd()
+    R_MTR = 1
+    L_MTR = 0
+    FWD = 0
+    BWD = 1
+
+    NODE_NAME = "wheels_commands_node"
+    rospy.init_node(NODE_NAME)
+
+    IN_TOPIC = "in_topic"
+
+    rospy.on_shutdown(shutdown)
+
+    try:
+        _WheelsCommands()
+        rospy.spin()
+    except (KeyboardInterrupt, SystemExit):
+        rospy.logwarn("Stopping Motor!")
+        myMotor.disable()
+        sys.exit(0)
