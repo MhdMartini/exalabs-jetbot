@@ -1,10 +1,12 @@
 <launch>
 
   <group ns="jetbot">
-    <node pkg="jetbot_ros" name="camera" type="jetbot_camera"/>
-    <node pkg="camera" name="img_processed_node" type="img_processed.py">
+    <node pkg="camera" name="camera_node" type="camera.py">
+      <remap from="out_topic_raw" to="camera/raw"/>
+      <remap from="out_topic_preprocessed" to="camera/processed"/>
+      <remap from="out_topic_cropped" to="camera/cropped"/>
         <param name="SCALE" value="4"/>
-        <param name="OFFSET" value="35"/>
+        <param name="OFFSET" value="50"/>
     </node>
   </group>
 
