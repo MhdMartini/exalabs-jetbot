@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
 Node to control the Jetbot's motor linear and angular speed.
 
