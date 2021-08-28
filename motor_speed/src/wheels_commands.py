@@ -21,7 +21,7 @@ class _WheelsCommands:
 
     def init_motor(self):
         myMotor.begin()
-        rospy.logwarn("Motor initialized")
+        rospy.logwarn("Motor Initialized")
         self.rate.sleep()
 
     def get_dir_val(self, speed):
