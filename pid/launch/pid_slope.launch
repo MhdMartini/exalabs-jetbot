@@ -1,5 +1,7 @@
 <launch>
 
+  <arg name="color"/>
+
   <group ns="jetbot">
 
       <node pkg="pid" name="pid_errors_slope_node" type="pid_errors.py">
@@ -7,7 +9,7 @@
           <param name="LIMIT" value="0.5"/>
           <param name="DESIRED" value="0"/>
 
-          <remap from="in_topic" to="yellow_slope"/>
+          <remap from="in_topic" to="$(arg color)_slope"/>
           <remap from="out_topic" to="pid_errors_slope"/>
       </node>
 
