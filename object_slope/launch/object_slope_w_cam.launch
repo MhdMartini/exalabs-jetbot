@@ -3,7 +3,7 @@
 
     <arg name="color"/>
 
-    <include file="$(find camera)/launch/camera.launch"/>
+    <!-- <include file="$(find camera)/launch/camera.launch"/> -->
     <include file="$(find color_mask)/launch/$(arg color)_mask.launch"/>
     <include file="$(find object_centroid)/launch/object_centroid.launch">
         <arg name="color" value="$(arg color)"/>
