@@ -63,7 +63,7 @@ if __name__ == '__main__':
     PARAM_MIN_VEL = os.path.join(rospy.get_name(), "MIN_VELOCITY")
     PARAM_MIN_VEL_DEF = 0.26
 
-    PARAM_SHARP_TURN = PARAM_MIN_VEL = os.apth.join(rospy.get_name(), "SHARP_TURN")
+    PARAM_SHARP_TURN = os.path.join(rospy.get_name(), "SHARP_TURN")
     PARAM_SHARP_TURN_DEF = 0.01
 
     PARAM_CTRL_READY = os.path.join(rospy.get_name(), "CONTROLLER_READY")
