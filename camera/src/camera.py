@@ -6,7 +6,6 @@
 # Using a CSI camera (such as the Raspberry Pi Version 2) connected to a
 # NVIDIA Jetson Nano Developer Kit using OpenCV
 # Drivers for the camera and OpenCV are included in the base image
-import os
 import cv2
 import rospy
 from sensor_msgs.msg import Image
@@ -86,10 +85,10 @@ if __name__ == "__main__":
     OUT_TOPIC_1 = "out_topic_raw"
     OUT_TOPIC_2 = "out_topic_cropped"
 
-    PARAM_SCALE = os.path.join(rospy.get_name(), "SCALE")
+    PARAM_SCALE = "~/SCALE"
     PARAM_SCALE_DEF = 4
 
-    PARAM_OFFSET = os.path.join(rospy.get_name(), "OFFSET")
+    PARAM_OFFSET = "~/OFFSET"
     PARAM_OFFSET_DEF = 40
 
     Camera()

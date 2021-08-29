@@ -25,8 +25,6 @@ import rospy
 import numpy as np
 import cv2
 from sensor_msgs.msg import Image
-from std_msgs.msg import String
-import sys
 import os
 
 NAME_SPACE = "/jetbot"
@@ -117,32 +115,32 @@ if __name__ == "__main__":
     NODE_NAME = "hsv_finder_node"
     rospy.init_node(NODE_NAME)
 
-    IN_TOPIC = os.path.join(NAME_SPACE, "camera/processed/cropped")
+    IN_TOPIC = os.path.join(NAME_SPACE, "camera/cropped")
 
     OUT_TOPIC_1 = os.path.join(NAME_SPACE, rospy.get_name(), "rect")
     OUT_TOPIC_2 = os.path.join(NAME_SPACE, rospy.get_name(), "mask")
 
-    PARAM_PARAM_TO_SET = os.path.join(NAME_SPACE, rospy.get_name(), "PARAM_TO_SET")
+    PARAM_PARAM_TO_SET = "~/PARAM_TO_SET"
     PARAM_PARAM_TO_SET_DEF = "none"
     rospy.set_param(PARAM_PARAM_TO_SET, PARAM_PARAM_TO_SET_DEF)
 
-    PARAM_RECT_WIDTH = os.path.join(NAME_SPACE, rospy.get_name(), "RECT_WIDTH")
+    PARAM_RECT_WIDTH = "~/RECT_WIDTH"
     PARAM_RECT_WIDTH_DEF = 26  # width of rectangle
     rospy.set_param(PARAM_RECT_WIDTH, PARAM_RECT_WIDTH_DEF)
 
-    PARAM_OFFSET = os.path.join(NAME_SPACE, rospy.get_name(), "OFFSET")
+    PARAM_OFFSET = "~/OFFSET"
     PARAM_OFFSET_DEF = 40  # all height but top 40 pixles
     rospy.set_param(PARAM_OFFSET, PARAM_OFFSET_DEF)
 
-    PARAM_RECT_LEFT = os.path.join(NAME_SPACE, rospy.get_name(), "RECT_LEFT")
+    PARAM_RECT_LEFT = "~/RECT_LEFT"
     PARAM_RECT_LEFT_DEF = 0
     rospy.set_param(PARAM_RECT_LEFT, PARAM_RECT_LEFT_DEF)
 
-    PARAM_RECT_CENTER = os.path.join(NAME_SPACE, rospy.get_name(), "RECT_CENTER")
+    PARAM_RECT_CENTER = "~/RECT_CENTER"
     PARAM_RECT_CENTER_DEF = 1
     rospy.set_param(PARAM_RECT_CENTER, PARAM_RECT_CENTER_DEF)
 
-    PARAM_RECT_RIGHT = os.path.join(NAME_SPACE, rospy.get_name(), "RECT_RIGHT")
+    PARAM_RECT_RIGHT = "~/RECT_RIGHT"
     PARAM_RECT_RIGHT_DEF = 0
     rospy.set_param(PARAM_RECT_RIGHT, PARAM_RECT_RIGHT_DEF)
 

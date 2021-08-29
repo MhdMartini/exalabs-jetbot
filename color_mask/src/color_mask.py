@@ -20,7 +20,6 @@ import rospy
 import cv2
 import numpy as np
 from sensor_msgs.msg import Image
-import os
 
 
 class ColorMask:
@@ -63,14 +62,14 @@ if __name__ == "__main__":
     IN_TOPIC = "in_topic"
     OUT_TOPIC = "out_topic"
 
-    PARAM_HSV = os.path.join(rospy.get_name(), "HSV")
+    PARAM_HSV = "~/HSV"
     PARAM_HSV_DEF = {
         # yellow
         "LOWER": (1, 110, 150),
         "UPPER": (120, 255, 255)
     }
 
-    PARAM_NOISE_CANCEL = os.path.join(rospy.get_name(), "NOISE_CANCEL")
+    PARAM_NOISE_CANCEL = "~/NOISE_CANCEL"
     PARAM_NOISE_CANCEL_DEF = 0
 
     KERNEL = np.ones((4, 4), np.uint8)

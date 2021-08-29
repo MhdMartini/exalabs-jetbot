@@ -70,7 +70,7 @@ if __name__ == "__main__":
     OUT_TOPIC = "out_topic"
     CENTROID_DEF = (-1, -1)
 
-    PARAM_NORM = os.path.join(rospy.get_name(), "NORMALIZE")
+    PARAM_NORM = "~/NORMALIZE"
     PARAM_NORM_DEF = 0
 
     ObjectCentroid()

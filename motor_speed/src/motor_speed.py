@@ -54,7 +54,7 @@ if __name__ == '__main__':
     IN_TOPIC = "motor_speed"
     OUT_TOPIC = "wheels_commands"
 
-    TRIM_PARAM = os.path.join(rospy.get_name(), "TRIM")
+    TRIM_PARAM = "~/TRIM"
     TRIM_PARAM_DEF = -0.014
 
     _MotorSpeed()
