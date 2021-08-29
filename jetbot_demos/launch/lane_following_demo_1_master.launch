@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="color" value="yellow"/>
+  <arg name="color" value="blue"/>
   <include file="$(find color_mask)/launch/$(arg color)_mask.launch"/>
   <include file="$(find object_centroid)/launch/$(arg color)_centroid.launch"/>
   <include file="$(find object_slope)/launch/$(arg color)_slope.launch"/>
