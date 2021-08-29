@@ -3,8 +3,12 @@
   <arg name="color" value="yellow"/>
 
   <include file="$(find color_mask)/launch/$(arg color)_mask.launch"/>
-  <include file="$(find object_centroid)/launch/$(arg color)_centroid.launch"/>
-  <include file="$(find object_slope)/launch/$(arg color)_slope.launch"/>
+  <include file="$(find object_centroid)/launch/object_centroid.launch">
+     <arg name="color" value="$(arg color)"/>
+  </include>
+  <include file="$(find object_slope)/launch/object_slope.launch">
+     <arg name="color" value="$(arg color)"/>
+  </include>
   <include file="$(find pid)/launch/pid_slope.launch">
     <arg name="color" value="yellow"/>
   </include>
