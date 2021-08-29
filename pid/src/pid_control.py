@@ -55,9 +55,9 @@ if __name__ == '__main__':
     IN_TOPIC = "in_topic"
     OUT_TOPIC = "out_topic"
 
-    PARAM_P = "~/PID/P"
-    PARAM_I = "~/PID/I"
-    PARAM_D = "~/PID/D"
+    PARAM_P = os.path.join(rospy.get_name(), "PID/P")
+    PARAM_I = os.path.join(rospy.get_name(), "PID/I")
+    PARAM_D = os.path.join(rospy.get_name(), "PID/D")
 
     PARAM_PID_DEF = {
         # default pid parameters in case the PARAM_PID is not set in launch file

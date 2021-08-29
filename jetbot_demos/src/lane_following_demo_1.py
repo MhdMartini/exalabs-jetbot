@@ -57,16 +57,16 @@ if __name__ == '__main__':
 
     OUT_TOPIC = "motor_speed"
 
-    PARAM_MAX_VEL = "~/MAX_VELOCITY"
+    PARAM_MAX_VEL = os.apth.join(rospy.get_name(), "MAX_VELOCITY")
     PARAM_MAX_VEL_DEF = 0.26
 
-    PARAM_MIN_VEL = "~/MIN_VELOCITY"
+    PARAM_MIN_VEL = os.apth.join(rospy.get_name(), "MIN_VELOCITY")
     PARAM_MIN_VEL_DEF = 0.26
 
-    PARAM_SHARP_TURN = "~/SHARP_TURN"
+    PARAM_SHARP_TURN = PARAM_MIN_VEL = os.apth.join(rospy.get_name(), "SHARP_TURN")
     PARAM_SHARP_TURN_DEF = 0.01
 
-    PARAM_CTRL_READY = "~/CONTROLLER_READY"
+    PARAM_CTRL_READY = os.apth.join(rospy.get_name(), "CONTROLLER_READY")
     PARAM_CTRL_READY_DEF = 0
 
     rospy.set_param(PARAM_CTRL_READY, PARAM_CTRL_READY_DEF)
