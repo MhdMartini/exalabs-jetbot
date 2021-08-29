@@ -64,7 +64,7 @@ if __name__ == '__main__':
     IN_TOPIC = "in_topic"
     OUT_TOPIC = "out_topic"
 
-    PARAM_ID = os.path.join(rospy.get_name(), "TAG_ID")
+    PARAM_ID = "~/TAG_ID"
     PARAM_ID_DEF = 0
 
     CENTROID_DEF = -1, -1  # centroid published if no tag is detected
