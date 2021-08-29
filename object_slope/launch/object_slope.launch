@@ -1,0 +1,15 @@
+<launch>
+
+  <arg name="color"/>
+
+  <group ns="jetbot">
+
+      <node pkg="object_slope" name="$(arg color)_slope_node" type="object_slope.py">
+          <remap from="in_topic" to="$(arg color)_centroid"/>
+          <remap from="out_topic" to="$(arg color)_slope"/>
+      </node>
+
+  </group>
+
+
+</launch>

@@ -1,0 +1,13 @@
+<launch>
+
+  <arg name="color"/>
+
+  <group ns="jetbot">
+      <node pkg="object_centroid" name="$(arg color)_centroid_node" type="object_centroid.py">
+          <remap from="in_topic" to="$(arg color)_mask"/>
+          <remap from="out_topic" to="$(arg color)_centroid"/>
+          <param name="NORMALIZE" value="1"/>
+      </node>
+  </group>
+
+</launch>
