@@ -10,7 +10,7 @@
      <arg name="color" value="$(arg color)"/>
   </include>
   <include file="$(find pid)/launch/pid_slope.launch">
-    <arg name="color" value="yellow"/>
+    <arg name="color" value="$(arg color)"/>
   </include>
 
   <include file="$(find aruco_detector)/launch/aruco_detector.launch"/>
