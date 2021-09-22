@@ -1,10 +1,12 @@
 <launch>
 
+  <arg name="color" value="yellow"/>
+
   <group ns="jetbot">
 
       <node pkg="navigation_point" name="navigation_point_node" type="navigation_point.py">
-          <remap from="in_topic" to="yellow_mask"/>
-          <remap from="out_topic" to="yellow_centroid"/>
+          <remap from="in_topic" to="$(arg color)_mask"/>
+          <remap from="out_topic" to="$(arg color)_centroid"/>
       </node>
 
   </group>

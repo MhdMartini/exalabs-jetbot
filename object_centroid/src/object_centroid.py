@@ -41,7 +41,16 @@ class ObjectCentroid:
         except ZeroDivisionError:  # no lane is detected
             return None
 
-    def normalize(self, height, width, point):
+    def adjust_point(self, point, height, width):
+        """
+        receive a point coordinates in numpy array and transform them to the jetbot's perspective
+        """
+        np_x, np_y = point
+        x = np_x - width // 2
+        y = height - np_y
+        return x, y
+
+    def normalize_point(self, height, width, point):
         col, row = point
         return (col / width, row / height)
 
@@ -56,8 +65,9 @@ class ObjectCentroid:
         if centroid is None:
             self.publish(CENTROID_DEF)
             return
+        centroid = self.adjust_point(centroid, msg.height, msg.width)
         if rospy.get_param(PARAM_NORM, PARAM_NORM_DEF):
-            centroid = self.normalize(msg.height, msg.width, centroid)
+            centroid = self.normalize_point(msg.height, msg.width, centroid)
         self.publish(centroid)
 
 
@@ -71,7 +81,7 @@ if __name__ == "__main__":
     CENTROID_DEF = (-1, -1)
 
     PARAM_NORM = os.path.join(rospy.get_name(), "NORMALIZE")
-    PARAM_NORM_DEF = 1
+    PARAM_NORM_DEF = 0
 
     ObjectCentroid()
     rospy.spin()

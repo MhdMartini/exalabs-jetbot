@@ -1,0 +1,28 @@
+<launch>
+
+  <arg name="color" value="yellow"/>
+
+  <include file="$(find color_mask)/launch/$(arg color)_mask.launch"/>
+  <include file="$(find navigation_point)/launch/navigation_point.launch">
+  <include file="$(find object_slope)/launch/object_slope.launch">
+     <arg name="color" value="$(arg color)"/>
+  </include>
+
+  <include file="$(find pid)/launch/pid_slope.launch">
+    <arg name="color" value="yellow"/>
+  </include>
+
+  <include file="$(find aruco_detector)/launch/aruco_detector.launch"/>
+  <include file="$(find object_distance)/launch/aruco_distance.launch"/>
+  <include file="$(find pid)/launch/pid_distance.launch"/>
+
+  <group ns="jetbot">
+      <node pkg="jetbot_demos" name="lane_following_demo_1_node" type="lane_following_demo_1.py">
+          <param name="MAX_VELOCITY" value="0.28"/>
+          <param name="MIN_VELOCITY" value="0.26"/>
+          <param name="SHARP_TURN" value="0.1"/>
+          <param name="~/CONTROLLER_READY" value="0"/>
+      </node>
+  </group>
+
+</launch>

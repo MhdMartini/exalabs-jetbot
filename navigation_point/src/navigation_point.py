@@ -29,10 +29,15 @@ class NavigationPoint:
         self.pub = rospy.Publisher(OUT_TOPIC, Vector2D, queue_size=1)
 
     def get_nav_point(self, image, height, width):
+        """
+        Get the top-most filtered point
+        """
+        NAV_POINT_DEF = 0, 0
         for y in range(height):
-            for x in range(width):
-                if image[y, x] > 0:
-                    return x / width, y / height
+            if not np.any(image[y]):
+                continue
+            center_x = int(np.mean(np.where(image[y] > 0)[0]))
+            return center_x, y
         return NAV_POINT_DEF
 
     def publish(self, point):
@@ -40,11 +45,26 @@ class NavigationPoint:
         msg.x, msg.y = point
         self.pub.publish(msg)
 
+    def adjust_point(self, point, height, width):
+        """
+        receive a point coordinates in numpy array and transform them to the jetbot's perspective
+        """
+        np_x, np_y = point
+        x = np_x - width // 2
+        y = height - np_y
+        return x, y
+
+    def normalize_point(self, point, height, width):
+        col, row = point
+        return (col / width, row / height)
+
     def main(self, msg):
         height, width = msg.height, msg.width
         image = np.frombuffer(msg.data, dtype=np.uint8).reshape(height, width, -1)  # cv_bridge alternative
         nav_point = self.get_nav_point(image, height, width)
-        self.publish(nav_point)
+        nav_point_adj = self.adjust_point(nav_point, height, width)
+        nav_point_norm = self.normalize_point(nav_point_adj, height, width)
+        self.publish(nav_point_norm)
 
 
 if __name__ == "__main__":

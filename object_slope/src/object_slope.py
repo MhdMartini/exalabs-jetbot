@@ -28,13 +28,6 @@ class ObjectSlope:
         rospy.Subscriber(IN_TOPIC, Vector2D, self.main, queue_size=1)
         self.pub = rospy.Publisher(OUT_TOPIC, Float32, queue_size=1)
 
-    def get_dx_dy(self, x, y):
-        # get pixel coordinates and return coordinates from bottom center
-        # (x: 0.5 to -0.5 left to right) (y: 0 to 1 bottom to top)
-        dx = 0.5 - x
-        dy = 1 - y
-        return dx, dy
-
     def publish(self, slope):
         self.pub.publish(slope)
 
@@ -42,8 +35,7 @@ class ObjectSlope:
         centroid = msg.x, msg.y
         if centroid == CENTROID_DEF:
             self.publish(SLOPE_DEF)
-        dx, dy = self.get_dx_dy(msg.x, msg.y)
-        slope = np.arctan2(dx, dy)
+        slope = np.arctan2(*centroid)
         self.publish(slope)
 
 
