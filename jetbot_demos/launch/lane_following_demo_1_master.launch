@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="color" value="yellow"/>
+  <arg name="color" default="yellow"/>
 
   <include file="$(find color_mask)/launch/$(arg color)_mask.launch"/>
   <include file="$(find object_centroid)/launch/object_centroid.launch">
@@ -10,7 +10,7 @@
      <arg name="color" value="$(arg color)"/>
   </include>
   <include file="$(find pid)/launch/pid_slope.launch">
-    <arg name="color" value="yellow"/>
+    <arg name="color" value="$(arg color)"/>
   </include>
 
   <include file="$(find aruco_detector)/launch/aruco_detector.launch"/>

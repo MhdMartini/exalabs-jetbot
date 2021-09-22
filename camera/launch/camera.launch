@@ -5,7 +5,7 @@
       <remap from="out_topic_raw" to="camera/raw"/>
       <remap from="out_topic_preprocessed" to="camera/processed"/>
       <remap from="out_topic_cropped" to="camera/cropped"/>
-        <param name="SCALE" value="4"/>
+        <param name="SCALE" value="8"/>
         <param name="OFFSET" value="50"/>
     </node>
   </group>
